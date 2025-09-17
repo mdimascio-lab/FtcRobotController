@@ -248,7 +248,7 @@ The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc
 * Adds explanatory text to failed items on the inspection activities.  To view the explanatory text tap the red warning icon for a failed item.
 * In the Blocks editor: added a new kind of variable set block that sets the variable and also returns the new value.
 * Changes the way that camera controls behave for a SwitchableCamera. Now, each method (such as getExposure, getMinExposure, getMaxExposure, setExposure for ExposureControl) acts on the currently active camera.
-* Adds support for the REV USB PS4 Compatible Gamepad (REV-31-2983)
+* Adds support for the REV USB PS4 Compatible org.firstinspires.ftc.teamcode.Gamepad (REV-31-2983)
 * Adds ConceptAprilTagMultiPortal OpMode
 * Adds support for OctoQuad Quadrature Encoder & Pulse Width Interface Module
 * Adds the ExportAprilTagLibraryToBlocks annotation that indicates that a static method that returns an AprilTagLibrary is exported to the Blocks programming environment. The corresponding block will appear in the Blocks toolbox along with the built-in tag libraries.
@@ -260,7 +260,7 @@ The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc
 * Fixes a bug in the blocks editor where collapsed function blocks show a warning "Collapsed blocks contain warnings." when the Blocks OpMode is reopened.
 * Fixes a bug where the blocks editor wouldn't warn you that you have unsaved changes when you try to leave. This bug was introduced due to a behavior change in Chrome 119.
 * [Issue #764](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/764) - Get gain control returns a null pointer for a switchable camera
-* Fixes a bug where the correct deadzone for certain gamepads was not applied when Advanced Gamepad Features was enabled
+* Fixes a bug where the correct deadzone for certain gamepads was not applied when Advanced org.firstinspires.ftc.teamcode.Gamepad Features was enabled
 
 ## Version 9.1 (20240215-115542)
 
@@ -571,9 +571,9 @@ This is a bug fix only release to address the following four issues.
 * Self inspect now allows for Driver Station and Robot Controller compatibility between point releases.
 * Fixes bug where if the same `RumbleEffect` object instance was queued for multiple gamepads, it
   could happen that both rumble commands would be sent to just one gamepad.
-* Fixes bug in Driver Station where on the Driver Hub, if Advanced Gamepad Features was disabled and
-  an officially supported gamepad was connected, then opening the Advanced Gamepad Features or
-  Gamepad Type Overrides screens would cause the gamepad to be rebound by the custom USB driver even
+* Fixes bug in Driver Station where on the Driver Hub, if Advanced org.firstinspires.ftc.teamcode.Gamepad Features was disabled and
+  an officially supported gamepad was connected, then opening the Advanced org.firstinspires.ftc.teamcode.Gamepad Features or
+  org.firstinspires.ftc.teamcode.Gamepad Type Overrides screens would cause the gamepad to be rebound by the custom USB driver even
   though advanced gamepad features was disabled.
 * Protects against (unlikely) null pointer exception in Vuforia Localizer.
 * Harden OnBotJava and Blocks saves to protect against save issues when disconnecting from Program and Manage
@@ -590,9 +590,9 @@ This is a bug fix only release to address the following four issues.
 
 * Fixes crash when calling `isPwmEnabled()` ([issue #223](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/233)).
 * Fixes lint error ([issue #4](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/4)).
-* Fixes Driver Station crash when attempting to use DualShock4 v1 gamepad with Advanced Gamepad Features enabled ([issue #173](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/173)).
+* Fixes Driver Station crash when attempting to use DualShock4 v1 gamepad with Advanced org.firstinspires.ftc.teamcode.Gamepad Features enabled ([issue #173](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/173)).
 * Fixes possible (but unlikely) Driver Station crash when connecting gamepads of any type.
-* Fixes bug where Driver Station would use generic 20% deadzone for Xbox360 and Logitech F310 gamepads when Advanced Gamepad Features was disabled.
+* Fixes bug where Driver Station would use generic 20% deadzone for Xbox360 and Logitech F310 gamepads when Advanced org.firstinspires.ftc.teamcode.Gamepad Features was disabled.
 * Added SimpleOmniDrive sample OpMode.
 * Adds UVC white balance control API.
 * Fixes [issue #259](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/259) Most blocks samples for TensorFlow can't be used for a different model.
@@ -634,7 +634,7 @@ This is a bug fix only release to address the following four issues.
       * org.firstinspires.ftc.ftccommon.external.OnDestroy
       * org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
 * Adds support for REV Robotics Driver Hub.
-* Adds fully custom userspace USB gamepad driver to Driver Station (see "Advanced Gamepad Features" menu in DS settings).
+* Adds fully custom userspace USB gamepad driver to Driver Station (see "Advanced org.firstinspires.ftc.teamcode.Gamepad Features" menu in DS settings).
     * Allows gamepads to work on devices without native Linux kernel support (e.g. some Romanian Motorola devices).
     * Allows the DS to read the unique serial number of each gamepad, enabling auto-recovery of dropped gamepads even if two gamepads of the same model drop. *(NOTE: unfortunately this does not apply to Etpark gamepads, because they do not have a unique serial)*.
     * Reading the unique serial number also provides the ability to configure the DS to assign gamepads to a certain position by default (so no need to do start+a/b at all).
@@ -642,7 +642,7 @@ This is a bug fix only release to address the following four issues.
     * The rumble motors on the Xbox360, PS4, and Etpark gamepads can be controlled from OpModes.
     * The 2-point touchpad on the PS4 gamepad can be read from OpModes.
     * The "back" and "guide" buttons on the gamepad can now be safely bound to robot controls (Previously, on many devices, Android would intercept these buttons as home button presses and close the app).
-    * Advanced Gamepad features are enabled by default, but may be disabled through the settings menu in order to revert to gamepad support provided natively by Android.
+    * Advanced org.firstinspires.ftc.teamcode.Gamepad features are enabled by default, but may be disabled through the settings menu in order to revert to gamepad support provided natively by Android.
 * Improves accuracy of ping measurement.
     * Fixes issue where the ping time showed as being higher than reality when initially connecting to or restarting the robot.
     * To see the full improvement, you must update both the Robot Controller and Driver Station apps.
@@ -1378,7 +1378,7 @@ Changes include:
      - Added type safety to blocks for CRServo.
      - Added type safety to blocks for DigitalChannel.
      - Added type safety to blocks for ElapsedTime.
-     - Added type safety to blocks for Gamepad.
+     - Added type safety to blocks for org.firstinspires.ftc.teamcode.Gamepad.
      - Added type safety to blocks for GyroSensor.
      - Added type safety to blocks for IrSeekerSensor.
      - Added type safety to blocks for LED.
