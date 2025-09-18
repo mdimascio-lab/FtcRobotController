@@ -25,7 +25,6 @@ public class Gamepad extends OpMode {
 
         telemetry.addData("xR", gamepad1.right_stick_x);
         telemetry.addData("yR", gamepad1.right_stick_y);
-
         telemetry.addData("a button", gamepad1.a);
         telemetry.addData("b button", gamepad1.b);
 
