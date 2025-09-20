@@ -60,7 +60,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp
-public class TestStarter extends OpMode {
+public class TestStarterTeleop extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -206,7 +206,7 @@ public class TestStarter extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        arcadeDrive(gamepad1.right_stick_x, -gamepad1.left_stick_y); // just switched x and y around
+        arcadeDrive(gamepad1.left_stick_y, gamepad1.left_stick_x);
 
         /*
          * Here we give the user control of the speed of the launcher motor without automatically
@@ -239,7 +239,7 @@ public class TestStarter extends OpMode {
     public void stop() {
     }
 
-    void arcadeDrive(double forward, double rotate) {
+    void arcadeDrive(double rotate, double forward) {
         leftPower = forward + rotate;
         rightPower = forward - rotate;
 
