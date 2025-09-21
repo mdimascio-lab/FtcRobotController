@@ -206,7 +206,7 @@ public class TestStarterTeleop extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        arcadeDrive(gamepad1.left_stick_y, gamepad1.left_stick_x);
+        arcadeDrive(gamepad1.left_stick_y, -gamepad1.left_stick_x);
 
         /*
          * Here we give the user control of the speed of the launcher motor without automatically
