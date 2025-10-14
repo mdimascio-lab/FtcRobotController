@@ -22,10 +22,6 @@ public class MecanumDrive {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         imu = hwMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
@@ -87,6 +83,10 @@ public class MecanumDrive {
 
     public void resetYaw(){
         imu.resetYaw();
+    }
+
+    public double getHeading() {
+        return imu.getRobotYawPitchRollAngles().getYaw();
     }
 
 }
