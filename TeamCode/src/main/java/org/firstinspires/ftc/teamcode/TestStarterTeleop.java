@@ -74,7 +74,7 @@ public class TestStarterTeleop extends OpMode {
      * velocity. Here we are setting the target, and minimum velocity that the launcher should run
      * at. The minimum velocity is a threshold for determining when to fire.
      */
-    final double LAUNCHER_TARGET_VELOCITY = 1700; //1125 too fast, 1200 last
+    final double LAUNCHER_TARGET_VELOCITY = 1600; //1125 too fast, 1200 last
     final double LAUNCHER_MIN_VELOCITY = 1200; // 1075 previous
 
     // Declare OpMode members.
