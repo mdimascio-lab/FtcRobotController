@@ -7,13 +7,42 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class TriangleStartRED extends OpMode {
+public class TriangleAutoRedShooting extends OpMode {
+    // -----------  shooter loigc ---------------
+
+    private DcMotorEx launcher = null;
+    private CRServo leftFeeder = null;
+    private CRServo rightFeeder = null;
+
+
+    final double LAUNCHER_TARGET_VELOCITY = 1600; //1125 too fast, 1200 last
+    final double LAUNCHER_MIN_VELOCITY = 1200; // 1075 previous
+
+    private enum LaunchState {
+        IDLE,
+        SPIN_UP,
+        LAUNCH,
+        LAUNCHING,
+    }
+
+    private LaunchState launchState;
+    final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
+    final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
+    final double FULL_SPEED = 1.0;
+
+
     private Follower follower;
     private Timer pathTimer, opModeTimer;
+    ElapsedTime feederTimer = new ElapsedTime();
 
     public enum PathState {
         // START POSITON_END POSITION `
@@ -25,6 +54,7 @@ public class TriangleStartRED extends OpMode {
         DRIVE_SHOOTPOS_ENDPOS
     }
 
+    // ------------- PATH LOGIC -0-----------------
     PathState pathState;
 
     private final Pose startPose = new Pose(82.09345794392523, 9.612817089452607, Math.toRadians(90));
@@ -52,14 +82,25 @@ public class TriangleStartRED extends OpMode {
         switch (pathState) {
             case DRIVE_STARTPOS_SHOOT_POS:
                 follower.followPath(driveStartPosShootPos, true);
-                setPathState(PathState.SHOOT_PRELOAD); // reset the timer & make new state
+                setPathState(PathState.SHOOT_PRELOAD);
+                launch(false);
+                 // start spinning up timer
+                // reset the timer & make new state
                 break;
             case SHOOT_PRELOAD:
                 // check is follower done it's path?
                 // and check that 5 seconds has elapsed
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
+                launch(false);
+
+                if (!follower.isBusy()) {
+                    // At shoot position now → FIRE
+                    launch(true);
+                }
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 10) {
                     follower.followPath(driveShootPosEndPos, true);
                     setPathState(PathState.DRIVE_SHOOTPOS_ENDPOS);
+                    launchState = LaunchState.IDLE;
+                    launch(false);
                 }
                 break;
             case DRIVE_SHOOTPOS_ENDPOS:
@@ -79,23 +120,62 @@ public class TriangleStartRED extends OpMode {
         pathTimer.resetTimer();
     }
 
+    void launch(boolean shotRequested) {
+        switch (launchState) {
+            case IDLE:
+                if (shotRequested) {
+                    launchState = LaunchState.SPIN_UP;
+                }
+                break;
+            case SPIN_UP:
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                    launchState = LaunchState.LAUNCH;
+                }
+                break;
+            case LAUNCH:
+                leftFeeder.setPower(FULL_SPEED);
+                rightFeeder.setPower(FULL_SPEED);
+                feederTimer.reset();
+                launchState = LaunchState.LAUNCHING;
+                break;
+            case LAUNCHING:
+                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+                    launchState = LaunchState.SPIN_UP;
+                    leftFeeder.setPower(STOP_SPEED);
+                    rightFeeder.setPower(STOP_SPEED);
+                }
+                break;
+        }
+    }
+
 
     @Override
     public void init() {
+
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
+        rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+
+        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+
         pathState = PathState.DRIVE_STARTPOS_SHOOT_POS;
         pathTimer = new Timer();
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
-
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
 
         buildPaths();
         follower.setPose(startPose);
+
+        launchState = LaunchState.IDLE;
     }
 
     public void start() {
         opModeTimer.resetTimer();
         setPathState(pathState);
+        launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override
