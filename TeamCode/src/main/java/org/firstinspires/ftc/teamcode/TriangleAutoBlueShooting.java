@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class TriangleAutoRedShooting extends OpMode {
+public class TriangleAutoBlueShooting extends OpMode {
     // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
@@ -54,13 +54,13 @@ public class TriangleAutoRedShooting extends OpMode {
         DRIVE_SHOOTPOS_ENDPOS
     }
 
-    // ------------- PATH LOGIC ------------------
+    // ------------- PATH LOGIC -0-----------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(82.09345794392523, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(73.826435246996, 73.44192256341789, Math.toRadians(46)); // TODO FIX PLEASE IT'S WRONG
+    private final Pose startPose = new Pose(62.29105473965287, 8.84379172229639, Math.toRadians(90));
+    private final Pose shootPose = new Pose(70.75033377837116, 73.24966622162884, Math.toRadians(132)); // TODO FIX PLEASE IT'S WRONG
 
-    private final Pose endPose = new Pose(92.66755674232309, 49.98664886515355, Math.toRadians(90)); //TODO AND THIS TOO
+    private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90)); //TODO AND THIS TOO
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -84,7 +84,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 follower.followPath(driveStartPosShootPos, true);
                 setPathState(PathState.SHOOT_PRELOAD);
                 launch(false);
-                 // start spinning up timer
+                // start spinning up timer
                 // reset the timer & make new state
                 break;
             case SHOOT_PRELOAD:
