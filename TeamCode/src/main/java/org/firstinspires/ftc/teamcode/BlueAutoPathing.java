@@ -6,13 +6,12 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class SampleAutoPathing extends OpMode {
+public class BlueAutoPathing extends OpMode {
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
@@ -28,10 +27,10 @@ public class SampleAutoPathing extends OpMode {
 
     PathState pathState;
 
-    private final Pose startPose = new Pose(20.386209877877445, 122.39783853885227, Math.toRadians(138));
-    private final Pose shootPose = new Pose(46.415043769588245, 96.90020533880903,Math.toRadians(138));
+    private final Pose startPose = new Pose(25, 118.39783853885227, Math.toRadians(138));
+    private final Pose shootPose = new Pose(46.415043769588245, 96.90020533880903, Math.toRadians(138)); // TODO FIX PLEASE IT'S WRONG
 
-    private final Pose endPose = new Pose(63.76759969739543, 105.75355019993515, Math.toRadians(90));
+    private final Pose endPose = new Pose(63.76759969739543, 105.75355019993515, Math.toRadians(90)); //TODO AND THIS TOO
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -45,10 +44,12 @@ public class SampleAutoPathing extends OpMode {
                 .addPath(new BezierLine(shootPose, endPose))
                 .setLinearHeadingInterpolation(shootPose.getHeading(), endPose.getHeading())
                 .build();
+
+
     }
 
     public void statePathUpdate() {
-        switch(pathState) {
+        switch (pathState) {
             case DRIVE_STARTPOS_SHOOT_POS:
                 follower.followPath(driveStartPosShootPos, true);
                 setPathState(PathState.SHOOT_PRELOAD); // reset the timer & make new state
@@ -87,6 +88,7 @@ public class SampleAutoPathing extends OpMode {
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
 
+
         buildPaths();
         follower.setPose(startPose);
     }
@@ -97,14 +99,16 @@ public class SampleAutoPathing extends OpMode {
     }
 
     @Override
-    public void loop() {
+    public void loop(){
         follower.update();
         statePathUpdate();
 
         telemetry.addData("path state", pathState.toString());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
-        telemetry.addData("heading", follower.getPose().getHeading());
+        telemetry.addData("heading", Math.toRadians(follower.getHeading()));
         telemetry.addData("Path time", pathTimer.getElapsedTimeSeconds());
     }
 }
+
+
