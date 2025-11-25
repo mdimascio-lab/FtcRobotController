@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "Pedro Pathing Autonomous", group = "Autonomous")
 @Configurable // Panels
-public class PedroAutonomous extends OpMode {
+public class pathTEST extends OpMode {
 
     private TelemetryManager panelsTelemetry; // Panels Telemetry instance
     public Follower follower; // Pedro Pathing follower instance
@@ -64,7 +64,7 @@ public class PedroAutonomous extends OpMode {
             Path2 = follower
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(72.481, 71.712), new Pose(108.240, 107.279))
+                            new BezierLine(new Pose(72.481, 71.712), new Pose(33.453, 109.971))
                     )
                     .setLinearHeadingInterpolation(Math.toRadians(45), Math.toRadians(37))
                     .build();
