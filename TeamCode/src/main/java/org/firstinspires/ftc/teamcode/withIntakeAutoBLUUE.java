@@ -1,0 +1,52 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.PathChain;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.pedropathing.util.Timer;
+
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.opencv.core.Mat;
+
+@Autonomous
+public class withIntakeAutoBLUUE extends OpMode{
+    private Follower follower;
+    private Timer pathTimer, opModeTimer;
+
+    public enum PathState {         // idk what im doing here but i guess it will work
+        DRIVE_STARTtoSHOOT1,
+        DRIVE_SHOOT1toBALLPILE1beforeC,             // C just meaning collected
+        COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC,
+        DRIVE_BALLPILE1afterCtoSHOOT2,
+        DRIVE_SHOOT2toBALLPILE2beforeC,
+        COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC,
+        DRIVE_BALLPILE2afterCtoSHOOT3,
+        DRIVE_SHOOT3toBALLPILE3beforeC,
+        COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC,
+        DRIVE_BALLPILE3afterCtoSHOOT4
+    }
+
+    PathState pathState;
+
+    private final Pose startPose = new Pose(59.40720961281709,11.150867823765026, Math.toRadians(90));
+    private final Pose shoot1 = new Pose(71.90387182910547, 71.71161548731642, Math.toRadians(132));
+    private final Pose ballPile1BeforeC = new Pose(44.41121495327103, 35.18291054739653, Math.toRadians(0));
+    private final Pose ballPile1AfterC = new Pose(23.647530040053404, 35.18291054739653, Math.toRadians(0));
+    private final Pose shoot2 = new Pose(71.90387182910547, 71.90387182910547, Math.toRadians(132));
+    private final Pose ballPile2BeforeC = new Pose(46.141522029372496, 59.79172229639519, Math.toRadians(0));
+    private final Pose ballPile2AfterC = new Pose(24.03204272363151, 59.59946595460614, Math.toRadians(0));
+    private final Pose shoot3 = new Pose(71.90387182910547, 72.09612817089453, Math.toRadians(132));
+    private final Pose ballPile3BeforeC = new Pose(44.60347129506008, 84.20827770360481, Math.toRadians(0));    // we might not have enough time to shoot another time
+    private final Pose ballPile3AfterC = new Pose(24.608811748998665, 84.01602136181576, Math.toRadians(0));
+    private final Pose shoot4 = new Pose(71.71161548731642, 72.09612817089453, Math.toRadians(132));
+    private final Pose ninetyToTeleOp = new Pose(47.10280373831775, 24.224299065420563, Math.toRadians(90));
+
+    public void buildPaths() {
+
+    }
+}
+
+

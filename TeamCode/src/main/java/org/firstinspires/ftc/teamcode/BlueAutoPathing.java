@@ -21,7 +21,6 @@ public class BlueAutoPathing extends OpMode {
         // SHOOT > ATTEMPT TO SCORE THE ARTIFACT
         DRIVE_STARTPOS_SHOOT_POS,
         SHOOT_PRELOAD,
-
         DRIVE_SHOOTPOS_ENDPOS
     }
 
