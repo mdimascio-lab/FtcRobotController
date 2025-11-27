@@ -44,9 +44,54 @@ public class withIntakeAutoBLUUE extends OpMode{
     private final Pose shoot4 = new Pose(71.71161548731642, 72.09612817089453, Math.toRadians(132));
     private final Pose ninetyToTeleOp = new Pose(47.10280373831775, 24.224299065420563, Math.toRadians(90));
 
-    public void buildPaths() {
-
+    private PathChain driveStartPosShoot1Pos, driveShoot1PosBallPile1BeforeCPos, driveBallPile1BeforeCPosBallPile1AfterCPos, driveBallPile1AfterCPosShoot2Pos, driveShoot2PosBallPile2BeforeCPos, driveBallPile2BeforeCPosBallPile2AfterCPos, driveBallPile2AfterCPosShoot3Pos, driveShoot3PosBallPile3BeforeCPos, driveBallPile3BeforeCPosBallPile3AfterCpos, driveBallPile3AfterCPosShoot4Pos, driveShoot4PosNinetyToTeleOpPos; // uwa so long
+    public void buildPaths() {  // i actually understand this
+        driveStartPosShoot1Pos = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, shoot1))
+                .setLinearHeadingInterpolation(startPose.getHeading(), shoot1.getHeading())
+                .build();
+        driveShoot1PosBallPile1BeforeCPos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot1, ballPile1BeforeC))
+                .setLinearHeadingInterpolation(shoot1.getHeading(), ballPile1BeforeC.getHeading())
+                .build();
+        driveBallPile1BeforeCPosBallPile1AfterCPos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile1BeforeC, ballPile1AfterC))
+                .setLinearHeadingInterpolation(ballPile1BeforeC.getHeading(),ballPile1AfterC.getHeading())
+                .build();
+        driveBallPile1AfterCPosShoot2Pos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile1AfterC, shoot2))
+                .setLinearHeadingInterpolation(ballPile1AfterC.getHeading(), shoot2.getHeading())
+                .build();
+        driveShoot2PosBallPile2BeforeCPos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot2, ballPile2BeforeC))
+                .setLinearHeadingInterpolation(shoot2.getHeading(), ballPile2BeforeC.getHeading())
+                .build();
+        driveBallPile2BeforeCPosBallPile2AfterCPos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile2BeforeC, ballPile2AfterC))
+                .setLinearHeadingInterpolation(ballPile2BeforeC.getHeading(), ballPile2AfterC.getHeading())
+                .build();
+        driveBallPile2AfterCPosShoot3Pos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile2AfterC, shoot3))
+                .setLinearHeadingInterpolation(ballPile2AfterC.getHeading(),shoot3.getHeading())
+                .build();
+        driveShoot3PosBallPile3BeforeCPos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot3, ballPile3BeforeC))
+                .setLinearHeadingInterpolation(shoot3.getHeading(), ballPile3BeforeC.getHeading())  // genuine flow state
+                .build();
+        driveBallPile3BeforeCPosBallPile3AfterCpos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile3BeforeC, ballPile3AfterC))
+                .setLinearHeadingInterpolation(ballPile3BeforeC.getHeading(), ballPile3AfterC.getHeading())
+                .build();
+        driveBallPile3AfterCPosShoot4Pos = follower.pathBuilder()
+                .addPath(new BezierLine(ballPile3AfterC, shoot4))
+                .setLinearHeadingInterpolation(ballPile3AfterC.getHeading(), shoot4.getHeading())
+                .build();
+        driveShoot4PosNinetyToTeleOpPos = follower.pathBuilder()
+                .addPath(new BezierLine(shoot4, ninetyToTeleOp))
+                .setLinearHeadingInterpolation(shoot4.getHeading(), ninetyToTeleOp.getHeading())
+                .build();   //took way too long :sob:
     }
+
 }
 
 
