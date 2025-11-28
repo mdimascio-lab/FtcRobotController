@@ -92,6 +92,50 @@ public class withIntakeAutoBLUUE extends OpMode{
                 .build();   //took way too long :sob:
     }
 
+    public void statePathUpdate() { // i somewhat understand this?
+        switch (pathState) {
+            case DRIVE_STARTtoSHOOT1:
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveStartPosShoot1Pos, true);
+                    setPathState(PathState.DRIVE_SHOOT1toBALLPILE1beforeC);
+                }
+                break;
+            case DRIVE_SHOOT1toBALLPILE1beforeC:
+                follower.followPath(driveShoot1PosBallPile1BeforeCPos, true);
+                setPathState(PathState.COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC);
+                break;
+            case COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC:
+                follower.followPath(driveBallPile1BeforeCPosBallPile1AfterCPos);
+                setPathState(PathState.DRIVE_BALLPILE1afterCtoSHOOT2);
+                break;
+            case DRIVE_BALLPILE1afterCtoSHOOT2:
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveBallPile1AfterCPosShoot2Pos);
+                    setPathState(PathState.DRIVE_SHOOT2toBALLPILE2beforeC);
+                }
+                break;
+            case DRIVE_SHOOT2toBALLPILE2beforeC:
+                follower.followPath(driveShoot2PosBallPile2BeforeCPos);
+                setPathState(PathState.COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC);
+                break;
+            case COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC:
+                follower.followPath(driveBallPile2BeforeCPosBallPile2AfterCPos);
+                setPathState(PathState.DRIVE_BALLPILE2afterCtoSHOOT3);
+                break;
+            case DRIVE_BALLPILE2afterCtoSHOOT3:
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveBallPile2AfterCPosShoot3Pos);
+                    setPathState(PathState.DRIVE_SHOOT3toBALLPILE3beforeC);
+                }
+                break;
+                // TODO write more lines here
+        }
+    }
+
+    public void setPathState(withIntakeAutoBLUUE.PathState newState) {
+        pathState = newState;
+        pathTimer.resetTimer();
+    }
 }
 
 
