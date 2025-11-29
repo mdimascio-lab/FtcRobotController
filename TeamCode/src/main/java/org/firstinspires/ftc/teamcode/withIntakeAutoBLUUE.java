@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import org.opencv.core.Mat;
 
 @Autonomous
 public class withIntakeAutoBLUUE extends OpMode{
@@ -26,7 +25,9 @@ public class withIntakeAutoBLUUE extends OpMode{
         DRIVE_BALLPILE2afterCtoSHOOT3,
         DRIVE_SHOOT3toBALLPILE3beforeC,
         COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC,
-        DRIVE_BALLPILE3afterCtoSHOOT4
+        DRIVE_BALLPILE3afterCtoSHOOT4,
+        DRIVE_SHOOT4to90TELEOP,
+        END_90TELEOP
     }
 
     PathState pathState;
@@ -128,14 +129,65 @@ public class withIntakeAutoBLUUE extends OpMode{
                     setPathState(PathState.DRIVE_SHOOT3toBALLPILE3beforeC);
                 }
                 break;
-                // TODO write more lines here
+            case DRIVE_SHOOT3toBALLPILE3beforeC:
+                follower.followPath(driveShoot3PosBallPile3BeforeCPos);
+                setPathState(PathState.COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC);
+                break;
+            case COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC:
+                follower.followPath(driveBallPile3BeforeCPosBallPile3AfterCpos);
+                setPathState(PathState.DRIVE_BALLPILE3afterCtoSHOOT4);
+                break;
+            case DRIVE_BALLPILE3afterCtoSHOOT4:
+                follower.followPath(driveBallPile3AfterCPosShoot4Pos);
+                setPathState(PathState.DRIVE_SHOOT4to90TELEOP);
+                break;
+            case DRIVE_SHOOT4to90TELEOP:
+                follower.followPath(driveShoot4PosNinetyToTeleOpPos);
+                setPathState(PathState.END_90TELEOP);
+                break;
+            case END_90TELEOP:
+                if (!follower.isBusy()) {
+                    telemetry.addLine("Done all Paths");
+                }
+            default:
+                telemetry.addLine("No State Commanded");
+                break;
         }
     }
 
-    public void setPathState(withIntakeAutoBLUUE.PathState newState) {
+    public void setPathState(PathState newState) {
         pathState = newState;
         pathTimer.resetTimer();
     }
+
+    @Override
+    public void init() {
+        pathState = PathState.DRIVE_STARTtoSHOOT1;
+        pathTimer = new Timer();
+        opModeTimer = new Timer();
+        follower = Constants.createFollower(hardwareMap);
+
+        buildPaths();
+        follower.setPose(startPose);
+    }
+
+    public void start() {
+        opModeTimer.resetTimer();
+        setPathState(pathState);
+    }
+
+    @Override
+    public void loop(){
+        follower.update();
+        statePathUpdate();
+
+        telemetry.addData("path state", pathState.toString());
+        telemetry.addData("x", follower.getPose().getX());
+        telemetry.addData("y", follower.getPose().getY());
+        telemetry.addData("heading", Math.toRadians(follower.getHeading()));
+        telemetry.addData("Path time", pathTimer.getElapsedTimeSeconds());
+    }
 }
+
 
 
