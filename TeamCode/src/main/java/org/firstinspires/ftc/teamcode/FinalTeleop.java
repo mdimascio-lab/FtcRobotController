@@ -62,7 +62,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 
 @TeleOp
-public class TestStarterTeleop extends OpMode {
+public class FinalTeleop extends OpMode {
     MecanumDrive drive = new MecanumDrive();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
@@ -202,7 +202,12 @@ public class TestStarterTeleop extends OpMode {
          */
         launch(gamepad1.rightBumperWasPressed());
 
-        drive.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        // TODO CHECK THAT IT IS ROBOT ORIENTED NOT FIELD
+        // TODO IF IT IS CORRECT, COPY ALL CODE AND MAKE NEW CLASS FOR ROBOT CENTRIC
+        // This is so we can have a version for each orientation
+        drive.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); // This should make it robot centric
+
+        // drive.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //THIS IS THE CORRECT FIELD ORIENTED LINE
         /*
          * Show the state and motor powers§
          */

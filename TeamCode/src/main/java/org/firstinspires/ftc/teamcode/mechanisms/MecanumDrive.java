@@ -53,7 +53,7 @@ public class MecanumDrive {
     }
 
     // Thanks to FTC16072 for sharing this code!!
-    private void drive(double forward, double right, double rotate) {
+    public void drive(double forward, double right, double rotate) {
         // This calculates the power needed for each wheel based on the amount of forward,
         // strafe right, and rotate
         double frontLeftPower = forward + right + rotate;
