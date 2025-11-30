@@ -11,7 +11,7 @@ import com.pedropathing.util.Timer;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class withIntakeAutoBLUUE extends OpMode{
+public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OMG YOU COOKED
     private Follower follower;
     private Timer pathTimer, opModeTimer;
 
