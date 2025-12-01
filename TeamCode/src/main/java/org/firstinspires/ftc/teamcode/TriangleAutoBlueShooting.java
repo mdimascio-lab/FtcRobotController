@@ -24,8 +24,8 @@ public class TriangleAutoBlueShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1570; //1125 too fast, 1200 last
-    final double LAUNCHER_MIN_VELOCITY = 1230; // 1075 previous
+    final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last
+    final double LAUNCHER_MIN_VELOCITY = 1170; // 1075 previous
 
     private enum LaunchState {
         IDLE,
@@ -58,7 +58,7 @@ public class TriangleAutoBlueShooting extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(62.29105473965287, 8.84379172229639, Math.toRadians(90));
-    private final Pose shootPose = new Pose(70.75033377837116, 77.63478260869564, Math.toRadians(132)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
+    private final Pose shootPose = new Pose(60.10434782608695, 84.73043478260871, Math.toRadians(130)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
 
     private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90)); //TODO AND THIS TOO
 

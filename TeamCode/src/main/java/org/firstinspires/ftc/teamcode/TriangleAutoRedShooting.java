@@ -24,20 +24,22 @@ public class TriangleAutoRedShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1570; //1125 too fast, 1200 last
-    final double LAUNCHER_MIN_VELOCITY = 1230; // 1075 previous
+    final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last
+    final double LAUNCHER_MIN_VELOCITY = 1170; // 1075 previous
 
     private enum LaunchState {
         IDLE,
         SPIN_UP,
         LAUNCH,
         LAUNCHING,
+        WAIT_BETWEEN_SHOTS
     }
 
     private LaunchState launchState;
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    final double BETWEEN_SHOTS_DELAY = 0.50;
 
 
     private Follower follower;
@@ -141,9 +143,20 @@ public class TriangleAutoRedShooting extends OpMode {
                 break;
             case LAUNCHING:
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    launchState = LaunchState.SPIN_UP;
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
+
+                    // Start the pause timer
+                    feederTimer.reset();
+                    launchState = LaunchState.WAIT_BETWEEN_SHOTS;
+                }
+                break;
+
+            case WAIT_BETWEEN_SHOTS:
+                // Simply wait here without feeding or shooting
+                if (feederTimer.seconds() > BETWEEN_SHOTS_DELAY) {
+                    // After the wait time, resume spin-up for next shot
+                    launchState = LaunchState.SPIN_UP;
                 }
                 break;
         }
