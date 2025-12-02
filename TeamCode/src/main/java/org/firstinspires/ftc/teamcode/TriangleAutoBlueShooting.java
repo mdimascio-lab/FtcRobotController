@@ -8,8 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -24,20 +26,22 @@ public class TriangleAutoBlueShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last
-    final double LAUNCHER_MIN_VELOCITY = 1170; // 1075 previous
+    final double LAUNCHER_TARGET_VELOCITY = 1400; // PREV. 1530
+    final double LAUNCHER_MIN_VELOCITY = 1300; // prev.1170
 
     private enum LaunchState {
         IDLE,
         SPIN_UP,
         LAUNCH,
         LAUNCHING,
+        WAIT_BETWEEN_SHOTS
     }
 
     private LaunchState launchState;
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    final double BETWEEN_SHOTS_DELAY = 1.0; // prev was 2.0
 
 
     private Follower follower;
@@ -54,13 +58,14 @@ public class TriangleAutoBlueShooting extends OpMode {
         DRIVE_SHOOTPOS_ENDPOS
     }
 
-    // ------------- PATH LOGIC -0-----------------
+    // ------------- PATH LOGIC ------------------
     PathState pathState;
 
     private final Pose startPose = new Pose(62.29105473965287, 8.84379172229639, Math.toRadians(90));
     private final Pose shootPose = new Pose(60.10434782608695, 84.73043478260871, Math.toRadians(130)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
 
     private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90)); //TODO AND THIS TOO
+
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -141,9 +146,19 @@ public class TriangleAutoBlueShooting extends OpMode {
                 break;
             case LAUNCHING:
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    launchState = LaunchState.SPIN_UP;
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
+
+                    // Start the pause timer
+                    feederTimer.reset();
+                    launchState = LaunchState.WAIT_BETWEEN_SHOTS;
+                }
+                break;
+            case WAIT_BETWEEN_SHOTS:
+                // Simply wait here without feeding or shooting
+                if (feederTimer.seconds() > BETWEEN_SHOTS_DELAY) {
+                    // After the wait time, resume spin-up for next shot
+                    launchState = LaunchState.SPIN_UP;
                 }
                 break;
         }
@@ -156,6 +171,8 @@ public class TriangleAutoBlueShooting extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
+
 
         leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -188,6 +205,7 @@ public class TriangleAutoBlueShooting extends OpMode {
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", Math.toRadians(follower.getHeading()));
         telemetry.addData("Path time", pathTimer.getElapsedTimeSeconds());
+        telemetry.addData("launcher", launcher.getVelocity());
     }
 }
 

@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
-public class TriangleAutoRedShooting extends OpMode {
+public class GoalAutoBlueShooting extends OpMode {
     // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
@@ -88,7 +88,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 follower.followPath(driveStartPosShootPos, true);
                 setPathState(PathState.SHOOT_PRELOAD);
                 launch(false);
-                 // start spinning up timer
+                // start spinning up timer
                 // reset the timer & make new state
                 break;
             case SHOOT_PRELOAD:
