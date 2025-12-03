@@ -96,54 +96,68 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
     public void statePathUpdate() { // i somewhat understand this?
         switch (pathState) {
             case DRIVE_STARTtoSHOOT1:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
-                    follower.followPath(driveStartPosShoot1Pos, true);
-                    setPathState(PathState.DRIVE_SHOOT1toBALLPILE1beforeC);
-                }
+                follower.followPath(driveStartPosShoot1Pos, true);
+                setPathState(PathState.DRIVE_SHOOT1toBALLPILE1beforeC);
                 break;
             case DRIVE_SHOOT1toBALLPILE1beforeC:
-                follower.followPath(driveShoot1PosBallPile1BeforeCPos, true);
-                setPathState(PathState.COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC);
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveShoot1PosBallPile1BeforeCPos, true);
+                    setPathState(PathState.COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC);
+                }
                 break;
             case COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC:
-                follower.followPath(driveBallPile1BeforeCPosBallPile1AfterCPos);
-                setPathState(PathState.DRIVE_BALLPILE1afterCtoSHOOT2);
+                if (!follower.isBusy()) {
+                    follower.followPath(driveBallPile1BeforeCPosBallPile1AfterCPos);
+                    setPathState(PathState.DRIVE_BALLPILE1afterCtoSHOOT2);
+                }
                 break;
             case DRIVE_BALLPILE1afterCtoSHOOT2:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy()) {
                     follower.followPath(driveBallPile1AfterCPosShoot2Pos);
                     setPathState(PathState.DRIVE_SHOOT2toBALLPILE2beforeC);
                 }
                 break;
             case DRIVE_SHOOT2toBALLPILE2beforeC:
-                follower.followPath(driveShoot2PosBallPile2BeforeCPos);
-                setPathState(PathState.COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC);
+                if (follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveShoot2PosBallPile2BeforeCPos);
+                    setPathState(PathState.COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC);
+                }
                 break;
             case COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC:
-                follower.followPath(driveBallPile2BeforeCPosBallPile2AfterCPos);
-                setPathState(PathState.DRIVE_BALLPILE2afterCtoSHOOT3);
+                if (follower.isBusy()) {
+                    follower.followPath(driveBallPile2BeforeCPosBallPile2AfterCPos);
+                    setPathState(PathState.DRIVE_BALLPILE2afterCtoSHOOT3);
+                }
                 break;
             case DRIVE_BALLPILE2afterCtoSHOOT3:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy()) {
                     follower.followPath(driveBallPile2AfterCPosShoot3Pos);
                     setPathState(PathState.DRIVE_SHOOT3toBALLPILE3beforeC);
                 }
                 break;
             case DRIVE_SHOOT3toBALLPILE3beforeC:
-                follower.followPath(driveShoot3PosBallPile3BeforeCPos);
-                setPathState(PathState.COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC);
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveShoot3PosBallPile3BeforeCPos);
+                    setPathState(PathState.COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC);
+                }
                 break;
             case COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC:
-                follower.followPath(driveBallPile3BeforeCPosBallPile3AfterCpos);
-                setPathState(PathState.DRIVE_BALLPILE3afterCtoSHOOT4);
+                if (follower.isBusy()) {
+                    follower.followPath(driveBallPile3BeforeCPosBallPile3AfterCpos);
+                    setPathState(PathState.DRIVE_BALLPILE3afterCtoSHOOT4);
+                }
                 break;
             case DRIVE_BALLPILE3afterCtoSHOOT4:
-                follower.followPath(driveBallPile3AfterCPosShoot4Pos);
-                setPathState(PathState.DRIVE_SHOOT4to90TELEOP);
+                if (follower.isBusy()) {
+                    follower.followPath(driveBallPile3AfterCPosShoot4Pos);
+                    setPathState(PathState.DRIVE_SHOOT4to90TELEOP);
+                }
                 break;
             case DRIVE_SHOOT4to90TELEOP:
-                follower.followPath(driveShoot4PosNinetyToTeleOpPos);
-                setPathState(PathState.END_90TELEOP);
+                if (follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                    follower.followPath(driveShoot4PosNinetyToTeleOpPos);
+                    setPathState(PathState.END_90TELEOP);
+                }
                 break;
             case END_90TELEOP:
                 if (!follower.isBusy()) {
