@@ -118,13 +118,13 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 }
                 break;
             case DRIVE_SHOOT2toBALLPILE2beforeC:
-                if (follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
                     follower.followPath(driveShoot2PosBallPile2BeforeCPos);
                     setPathState(PathState.COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC);
                 }
                 break;
             case COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC:
-                if (follower.isBusy()) {
+                if (!follower.isBusy()) {
                     follower.followPath(driveBallPile2BeforeCPosBallPile2AfterCPos);
                     setPathState(PathState.DRIVE_BALLPILE2afterCtoSHOOT3);
                 }
@@ -142,19 +142,19 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 }
                 break;
             case COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC:
-                if (follower.isBusy()) {
+                if (!follower.isBusy()) {
                     follower.followPath(driveBallPile3BeforeCPosBallPile3AfterCpos);
                     setPathState(PathState.DRIVE_BALLPILE3afterCtoSHOOT4);
                 }
                 break;
             case DRIVE_BALLPILE3afterCtoSHOOT4:
-                if (follower.isBusy()) {
+                if (!follower.isBusy()) {
                     follower.followPath(driveBallPile3AfterCPosShoot4Pos);
                     setPathState(PathState.DRIVE_SHOOT4to90TELEOP);
                 }
                 break;
             case DRIVE_SHOOT4to90TELEOP:
-                if (follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
                     follower.followPath(driveShoot4PosNinetyToTeleOpPos);
                     setPathState(PathState.END_90TELEOP);
                 }
