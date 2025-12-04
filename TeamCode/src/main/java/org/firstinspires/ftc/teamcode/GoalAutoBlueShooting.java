@@ -5,6 +5,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -61,8 +62,8 @@ public class GoalAutoBlueShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(82.09345794392523, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(88.0695652173913, 86.19130434782608, Math.toRadians(46)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
+    private final Pose startPose = new Pose(22.30173564, 124.005340, Math.toRadians(143));
+    private final Pose shootPose = new Pose(60.10434782608695, 86.19130434782608, Math.toRadians(132)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
 
     private final Pose endPose = new Pose(92.66755674232309, 49.98664886515355, Math.toRadians(90)); //TODO AND THIS TOO
 
