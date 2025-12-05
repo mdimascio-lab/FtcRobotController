@@ -100,7 +100,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 setPathState(PathState.DRIVE_SHOOT1toBALLPILE1beforeC);
                 break;
             case DRIVE_SHOOT1toBALLPILE1beforeC:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveShoot1PosBallPile1BeforeCPos, true);
                     setPathState(PathState.COLLECTION_BALLPILE1beforeCtoBALLPILE1afterC);
                 }
@@ -118,7 +118,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 }
                 break;
             case DRIVE_SHOOT2toBALLPILE2beforeC:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveShoot2PosBallPile2BeforeCPos);
                     setPathState(PathState.COLLECTION_BALLPILE2beforeCtoBALLPILE2afterC);
                 }
@@ -136,7 +136,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 }
                 break;
             case DRIVE_SHOOT3toBALLPILE3beforeC:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveShoot3PosBallPile3BeforeCPos);
                     setPathState(PathState.COLLECTION_BALLPILE3beforeCtoBALLPILE3afterC);
                 }
@@ -154,7 +154,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 }
                 break;
             case DRIVE_SHOOT4to90TELEOP:
-                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 3) {
+                if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
                     follower.followPath(driveShoot4PosNinetyToTeleOpPos);
                     setPathState(PathState.END_90TELEOP);
                 }
