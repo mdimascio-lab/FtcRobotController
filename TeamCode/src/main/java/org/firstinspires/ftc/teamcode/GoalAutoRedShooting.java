@@ -61,8 +61,8 @@ public class GoalAutoRedShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(121.04347826086956, 125.63478260869566, Math.toRadians(36));
-    private final Pose shootPose = new Pose(88.0695652173913, 86.19130434782608, Math.toRadians(46)); // TODO FIX PLEASE IT'S WRONG
+    private final Pose startPose = new Pose(121.04347826086956, 127.09565217391304, Math.toRadians(37));
+    private final Pose shootPose = new Pose(73.87826086956522, 72.62608695652173, Math.toRadians(43)); // TODO FIX PLEASE IT'S WRONG
     private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90)); //TODO AND THIS TOO
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;

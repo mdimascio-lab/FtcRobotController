@@ -26,8 +26,8 @@ public class TriangleAutoRedShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1400; // PREV. 1530
-    final double LAUNCHER_MIN_VELOCITY = 1300; // prev.1170
+    final double LAUNCHER_TARGET_VELOCITY = 1600; // PREV. 1530
+    final double LAUNCHER_MIN_VELOCITY = 1500; // prev.1170
 
     private enum LaunchState {
         IDLE,
@@ -62,7 +62,7 @@ public class TriangleAutoRedShooting extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(82.09345794392523, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(88.0695652173913, 86.19130434782608, Math.toRadians(46)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
+    private final Pose shootPose = new Pose(73.87826086956522, 72.62608695652173, Math.toRadians(43)); // TODO FIX PLEASE IT'S WRONG previous values: 85.35652173913043, 94.5391304347826
 
     private final Pose endPose = new Pose(92.66755674232309, 49.98664886515355, Math.toRadians(90)); //TODO AND THIS TOO
 
@@ -147,7 +147,6 @@ public class TriangleAutoRedShooting extends OpMode {
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
-
                     // Start the pause timer
                     feederTimer.reset();
                     launchState = LaunchState.WAIT_BETWEEN_SHOTS;
