@@ -26,8 +26,10 @@ public class TriangleAutoBlueShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1600; // PREV. 1530
-    final double LAUNCHER_MIN_VELOCITY = 1500; // prev.1170
+    final double LAUNCHER_TARGET_VELOCITY = 1500; // PREV. 1530
+    final double LAUNCHER_VELOCITY_MARGIN = 50;
+    final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
+    final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
 
     private enum LaunchState {
         IDLE,
@@ -62,7 +64,7 @@ public class TriangleAutoBlueShooting extends OpMode {
     PathState pathState;
 
     private final Pose startPose = new Pose(62.29105473965287, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(73.04347826086956, 77.63478260869564, Math.toRadians(129)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
+    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
 
     private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90)); //TODO AND THIS TOO
 
@@ -134,7 +136,7 @@ public class TriangleAutoBlueShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;

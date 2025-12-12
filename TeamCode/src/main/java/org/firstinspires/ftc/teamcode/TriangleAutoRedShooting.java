@@ -26,8 +26,10 @@ public class TriangleAutoRedShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1600; // PREV. 1530
-    final double LAUNCHER_MIN_VELOCITY = 1500; // prev.1170
+    final double LAUNCHER_TARGET_VELOCITY = 1430; // PREV. 1530
+    final double LAUNCHER_VELOCITY_MARGIN = 50;
+    final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
+    final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
 
     private enum LaunchState {
         IDLE,
@@ -61,10 +63,11 @@ public class TriangleAutoRedShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(82.09345794392523, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(73.87826086956522, 72.62608695652173, Math.toRadians(43)); // TODO FIX PLEASE IT'S WRONG previous values: 85.35652173913043, 94.5391304347826
+    private final Pose startPose = new Pose(81.7089452603, 9.612817089452607, Math.toRadians(90));
+    private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
 
-    private final Pose endPose = new Pose(92.66755674232309, 49.98664886515355, Math.toRadians(90)); //TODO AND THIS TOO
+    private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90)); //TODO AND THIS TOO
+
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -88,7 +91,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 follower.followPath(driveStartPosShootPos, true);
                 setPathState(PathState.SHOOT_PRELOAD);
                 launch(false);
-                 // start spinning up timer
+                // start spinning up timer
                 // reset the timer & make new state
                 break;
             case SHOOT_PRELOAD:
@@ -133,7 +136,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -147,6 +150,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 if (feederTimer.seconds() > FEED_TIME_SECONDS) {
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
+
                     // Start the pause timer
                     feederTimer.reset();
                     launchState = LaunchState.WAIT_BETWEEN_SHOTS;

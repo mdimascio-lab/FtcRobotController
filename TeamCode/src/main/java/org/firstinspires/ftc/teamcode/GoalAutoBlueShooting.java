@@ -5,7 +5,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -27,8 +26,10 @@ public class GoalAutoBlueShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1400; // PREV. 1530
-    final double LAUNCHER_MIN_VELOCITY = 1300; // prev.1170
+    final double LAUNCHER_TARGET_VELOCITY = 1500; // PREV. 1530
+    final double LAUNCHER_VELOCITY_MARGIN = 50;
+    final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
+    final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
 
     private enum LaunchState {
         IDLE,
@@ -62,9 +63,11 @@ public class GoalAutoBlueShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
+
     private final Pose startPose = new Pose(22.30173564, 124.005340, Math.toRadians(143));
-    private final Pose shootPose = new Pose(73.04347826086956, 77.63478260869564, Math.toRadians(129)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
-    private  final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90));//TODO AND THIS TOO
+    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
+    private  final Pose endPose = new Pose(46.95652173913044, 136.0695652173913, Math.toRadians(90));//TODO AND THIS TOO
+
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -133,7 +136,7 @@ public class GoalAutoBlueShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;

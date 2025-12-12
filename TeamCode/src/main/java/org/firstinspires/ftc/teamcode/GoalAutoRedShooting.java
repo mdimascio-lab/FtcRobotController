@@ -26,8 +26,10 @@ public class GoalAutoRedShooting extends OpMode {
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1400; // PREV. 1530
-    final double LAUNCHER_MIN_VELOCITY = 1300; // prev.1170
+    final double LAUNCHER_TARGET_VELOCITY = 1430; // PREV. 1530
+    final double LAUNCHER_VELOCITY_MARGIN = 50;
+    final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
+    final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
 
     private enum LaunchState {
         IDLE,
@@ -61,9 +63,10 @@ public class GoalAutoRedShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
+
     private final Pose startPose = new Pose(121.04347826086956, 127.09565217391304, Math.toRadians(37));
-    private final Pose shootPose = new Pose(73.87826086956522, 72.62608695652173, Math.toRadians(43)); // TODO FIX PLEASE IT'S WRONG
-    private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90)); //TODO AND THIS TOO
+    private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40)); // TODO FIX PLEASE IT'S WRONG
+    private final Pose endPose = new Pose(97.0434782609, 136.0695652173913, Math.toRadians(90));
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -132,7 +135,7 @@ public class GoalAutoRedShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
