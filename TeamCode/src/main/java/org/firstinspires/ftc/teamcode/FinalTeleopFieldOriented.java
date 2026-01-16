@@ -43,6 +43,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 /*
@@ -64,6 +65,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @TeleOp
 public class FinalTeleopFieldOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
+    AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -119,6 +121,7 @@ public class FinalTeleopFieldOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
+        aprilTag.init(hardwareMap, telemetry);
 
         launchState = LaunchState.IDLE;
 
@@ -187,6 +190,10 @@ public class FinalTeleopFieldOriented extends OpMode {
     /*
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
      */
+    // public void faceAprilTag(){
+// TODO create method for april tag alignment 
+
+
     @Override
     public void loop() {
 
@@ -197,6 +204,9 @@ public class FinalTeleopFieldOriented extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
+        if (gamepad1.left_bumper) {
+            // TODO add code for april tag alignment
+        }
         /*
          * Now we call our "Launch" function.
          */
