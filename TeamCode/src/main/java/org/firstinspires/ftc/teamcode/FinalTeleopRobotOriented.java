@@ -43,6 +43,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 /*
@@ -64,6 +65,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @TeleOp
 public class FinalTeleopRobotOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
+    AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -83,6 +85,7 @@ public class FinalTeleopRobotOriented extends OpMode {
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private DcMotorEx intake = null;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -119,6 +122,7 @@ public class FinalTeleopRobotOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
+        aprilTag.init(hardwareMap, telemetry);
 
         launchState = LaunchState.IDLE;
 
@@ -131,6 +135,10 @@ public class FinalTeleopRobotOriented extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setZeroPowerBehavior(BRAKE);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         /*
@@ -196,6 +204,13 @@ public class FinalTeleopRobotOriented extends OpMode {
         } else if (gamepad1.b) { // stop flywheel
             launcher.setVelocity(STOP_SPEED);
         }
+
+        if (gamepad1.left_bumper) { // TODO test intake mechanism
+            intake.setPower(1.0);}
+        else {
+            intake.setPower(0);
+        }
+        /*
 
         /*
          * Now we call our "Launch" function.

@@ -86,6 +86,8 @@ public class FinalTeleopFieldOriented extends OpMode {
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
+    private DcMotorEx intake = null;
+
     ElapsedTime feederTimer = new ElapsedTime();
 
     /*
@@ -134,6 +136,10 @@ public class FinalTeleopFieldOriented extends OpMode {
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setZeroPowerBehavior(BRAKE);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         /*
@@ -191,7 +197,7 @@ public class FinalTeleopFieldOriented extends OpMode {
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
      */
     // public void faceAprilTag(){
-// TODO create method for april tag alignment 
+// TODO create method for april tag alignme
 
 
     @Override
@@ -204,8 +210,10 @@ public class FinalTeleopFieldOriented extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
-        if (gamepad1.left_bumper) {
-            // TODO add code for april tag alignment
+        if (gamepad1.left_bumper) { // TODO test intake mechanism
+            intake.setPower(1.0);}
+        else {
+            intake.setPower(0);
         }
         /*
          * Now we call our "Launch" function.

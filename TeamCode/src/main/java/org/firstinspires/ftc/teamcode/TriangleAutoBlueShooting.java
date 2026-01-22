@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
 public class TriangleAutoBlueShooting extends OpMode {
-    // -----------  shooter loigc ---------------
+    // -----------  shooter logic ---------------
 
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
