@@ -7,6 +7,12 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -14,7 +20,29 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OMG YOU COOKED
     private Follower follower;
     private Timer pathTimer, opModeTimer;
+    ElapsedTime feederTimer = new ElapsedTime();
+    private DcMotorEx launcher = null;
+    private CRServo leftFeeder = null;
+    private CRServo rightFeeder = null;
 
+    final double LAUNCHER_TARGET_VELOCITY = 1500;
+    final double LAUNCHER_VELOCITY_MARGIN = 50;
+    final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN;
+    final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
+
+    private enum LaunchState {
+        IDLE,
+        SPIN_UP,
+        LAUNCH,
+        LAUNCHING,
+        WAIT_BETWEEN_SHOTS
+    }
+
+    private LaunchState launchState;
+    final double FEED_TIME_SECONDS = 0.20;
+    final double STOP_SPEED = 0.0;
+    final double FULL_SPEED = 1.0;
+    final double BETWEEN_SHOTS_DELAY = 1.0;
     public enum PathState {         // idk what im doing here but i guess it will work
         DRIVE_STARTtoSHOOT1,
         DRIVE_SHOOT1toBALLPILE1beforeC,             // C just meaning collected
@@ -98,6 +126,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
             case DRIVE_STARTtoSHOOT1:
                 follower.followPath(driveStartPosShoot1Pos, true);
                 setPathState(PathState.DRIVE_SHOOT1toBALLPILE1beforeC);
+                launch(false);
                 break;
             case DRIVE_SHOOT1toBALLPILE1beforeC:
                 if (!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 5) {
@@ -174,8 +203,50 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
         pathTimer.resetTimer();
     }
 
+    void launch(boolean shotRequested) {
+        switch (launchState) {
+            case IDLE:
+                if (shotRequested) {
+                    launchState = withIntakeAutoBLUUE.LaunchState.SPIN_UP;
+                }
+                break;
+            case SPIN_UP:
+                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
+                    launchState = withIntakeAutoBLUUE.LaunchState.LAUNCH;
+                }
+                break;
+            case LAUNCH:
+                leftFeeder.setPower(FULL_SPEED);
+                rightFeeder.setPower(FULL_SPEED);
+                feederTimer.reset();
+                launchState = withIntakeAutoBLUUE.LaunchState.LAUNCHING;
+                break;
+            case LAUNCHING:
+                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+                    leftFeeder.setPower(STOP_SPEED);
+                    rightFeeder.setPower(STOP_SPEED);
+                    feederTimer.reset();
+                    launchState = withIntakeAutoBLUUE.LaunchState.WAIT_BETWEEN_SHOTS;
+                }
+                break;
+            case WAIT_BETWEEN_SHOTS:
+                if (feederTimer.seconds() > BETWEEN_SHOTS_DELAY) {
+                    launchState = withIntakeAutoBLUUE.LaunchState.SPIN_UP;
+                }
+                break;
+        }
+    }
+
     @Override
     public void init() {
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
+        rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
+
+        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+
         pathState = PathState.DRIVE_STARTtoSHOOT1;
         pathTimer = new Timer();
         opModeTimer = new Timer();
@@ -183,11 +254,14 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
 
         buildPaths();
         follower.setPose(startPose);
+
+        launchState = LaunchState.IDLE;
     }
 
     public void start() {
         opModeTimer.resetTimer();
         setPathState(pathState);
+        launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override
@@ -200,8 +274,6 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", Math.toRadians(follower.getHeading()));
         telemetry.addData("Path time", pathTimer.getElapsedTimeSeconds());
+        telemetry.addData("launcher", launcher.getVelocity());
     }
 }
-
-
-

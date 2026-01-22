@@ -183,7 +183,7 @@ public class GoalAutoBlueShooting extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher"); // we have this twice. I want to remove this but i think its better not.
 
         buildPaths();
         follower.setPose(startPose);
