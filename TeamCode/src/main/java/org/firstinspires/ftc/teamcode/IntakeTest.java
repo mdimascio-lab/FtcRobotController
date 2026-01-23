@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp
-public class IntakePrattFix extends OpMode {
+public class IntakeTest extends OpMode {
 
     private DcMotorEx intake;
 
