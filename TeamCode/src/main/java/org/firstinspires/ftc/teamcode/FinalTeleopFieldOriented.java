@@ -210,7 +210,7 @@ public class FinalTeleopFieldOriented extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
-        if (gamepad1.left_bumper) { // TODO test intake mechanism
+        if (gamepad1.left_bumper) {
             intake.setPower(1.0);}
         else {
             intake.setPower(0);
@@ -220,7 +220,7 @@ public class FinalTeleopFieldOriented extends OpMode {
          */
         launch(gamepad1.rightBumperWasPressed());
 
-        // TODO CHECK THAT IT IS FIELD ORIENTED NOT ROBOT
+
 
         drive.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //THIS IS THE CORRECT FIELD ORIENTED LINE
         /*

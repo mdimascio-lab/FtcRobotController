@@ -64,9 +64,9 @@ public class GoalAutoBlueShooting extends OpMode {
     PathState pathState;
 
 
-    private final Pose startPose = new Pose(22.30173564, 124.005340, Math.toRadians(143));
-    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
-    private  final Pose endPose = new Pose(46.95652173913044, 136.0695652173913, Math.toRadians(90));//TODO AND THIS TOO
+    private final Pose startPose = new Pose(22.30173564, 124.005340, Math.toRadians(143 - 180));
+    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140 + 180)); // TODO FIX PLEASE IT'S WRONG previous values: 73.826435246996, 73.44192256341789
+    private  final Pose endPose = new Pose(46.95652173913044, 136.0695652173913, Math.toRadians(90 + 180));//TODO AND THIS TOO
 
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;

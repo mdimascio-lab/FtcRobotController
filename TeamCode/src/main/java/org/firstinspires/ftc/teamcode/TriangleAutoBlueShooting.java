@@ -63,10 +63,10 @@ public class TriangleAutoBlueShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(62.29105473965287, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
+    private final Pose startPose = new Pose(62.29105473965287, 9.612817089452607, Math.toRadians(90 + 180));
+    private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140 + 180)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
 
-    private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90)); //TODO AND THIS TOO
+    private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90 + 180)); //TODO AND THIS TOO
 
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;

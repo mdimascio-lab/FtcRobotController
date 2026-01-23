@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name = "Intake Test")
-public class IntakeTest extends OpMode {
+@TeleOp
+public class IntakePrattFix extends OpMode {
 
     private DcMotorEx intake;
 
@@ -22,7 +22,7 @@ public class IntakeTest extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.left_bumper) {
-            intake.setPower(0.5);
+            intake.setPower(1.0);
         } else {
             intake.setPower(0.0);
         }

@@ -63,10 +63,10 @@ public class TriangleAutoRedShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
-    private final Pose startPose = new Pose(81.7089452603, 9.612817089452607, Math.toRadians(90));
-    private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
+    private final Pose startPose = new Pose(81.7089452603, 9.612817089452607, Math.toRadians(90 + 180));
+    private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40 + 180)); // TODO I added 180 to each value so that it starts backwards.
 
-    private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90)); //TODO AND THIS TOO
+    private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90 + 180)); // TODO Please check that the robot is facing the right direction.
 
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;

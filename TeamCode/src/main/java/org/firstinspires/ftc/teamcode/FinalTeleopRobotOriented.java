@@ -205,7 +205,7 @@ public class FinalTeleopRobotOriented extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
-        if (gamepad1.left_bumper) { // TODO test intake mechanism
+        if (gamepad1.left_bumper) {
             intake.setPower(1.0);}
         else {
             intake.setPower(0);
@@ -217,9 +217,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          */
         launch(gamepad1.rightBumperWasPressed());
 
-        // TODO CHECK THAT IT IS ROBOT ORIENTED NOT FIELD
-
-        drive.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); // This should make it robot centric
+        drive.drive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
 
         /*
          * Show the state and motor powers§
