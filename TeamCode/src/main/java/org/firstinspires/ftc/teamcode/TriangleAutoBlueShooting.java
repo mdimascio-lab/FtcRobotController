@@ -19,9 +19,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous
 public class TriangleAutoBlueShooting extends OpMode {
-    // -----------  shooter logic ---------------
+    // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
+    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
@@ -63,10 +64,11 @@ public class TriangleAutoBlueShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
+
     private final Pose startPose = new Pose(62.29105473965287, 9.612817089452607, Math.toRadians(90 + 180));
     private final Pose shootPose = new Pose(58.6434782609, 94.5391304347826, Math.toRadians(140 + 180)); // TODO FIX PLEASE IT'S WRONG previously 70.75033377837116, 73.24966622162884
-
     private final Pose endPose = new Pose(59.599465954606146, 35.75967957276368, Math.toRadians(90 + 180)); //TODO AND THIS TOO
+
 
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
@@ -136,7 +138,9 @@ public class TriangleAutoBlueShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
+                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if ((launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) &&
+                        (launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() < LAUNCHER_MAX_VELOCITY)){
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -171,6 +175,7 @@ public class TriangleAutoBlueShooting extends OpMode {
     public void init() {
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
@@ -183,7 +188,7 @@ public class TriangleAutoBlueShooting extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+
 
         buildPaths();
         follower.setPose(startPose);
@@ -195,6 +200,7 @@ public class TriangleAutoBlueShooting extends OpMode {
         opModeTimer.resetTimer();
         setPathState(pathState);
         launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override

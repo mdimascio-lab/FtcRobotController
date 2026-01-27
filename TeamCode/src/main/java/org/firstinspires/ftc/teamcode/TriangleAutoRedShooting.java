@@ -22,11 +22,12 @@ public class TriangleAutoRedShooting extends OpMode {
     // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
+    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1430; // PREV. 1530
+    final double LAUNCHER_TARGET_VELOCITY = 1500; // PREV. 1530
     final double LAUNCHER_VELOCITY_MARGIN = 50;
     final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
     final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
@@ -63,9 +64,9 @@ public class TriangleAutoRedShooting extends OpMode {
     // ------------- PATH LOGIC ------------------
     PathState pathState;
 
+
     private final Pose startPose = new Pose(81.7089452603, 9.612817089452607, Math.toRadians(90 + 180));
     private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40 + 180)); // TODO I added 180 to each value so that it starts backwards.
-
     private final Pose endPose = new Pose(86.89986648865154, 57.86915887850468, Math.toRadians(90 + 180)); // TODO Please check that the robot is facing the right direction.
 
 
@@ -136,7 +137,9 @@ public class TriangleAutoRedShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
+                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if ((launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) &&
+                        (launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() < LAUNCHER_MAX_VELOCITY)){
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -171,6 +174,7 @@ public class TriangleAutoRedShooting extends OpMode {
     public void init() {
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
@@ -183,7 +187,7 @@ public class TriangleAutoRedShooting extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+
 
         buildPaths();
         follower.setPose(startPose);
@@ -195,6 +199,7 @@ public class TriangleAutoRedShooting extends OpMode {
         opModeTimer.resetTimer();
         setPathState(pathState);
         launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override

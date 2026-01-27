@@ -22,11 +22,12 @@ public class GoalAutoRedShooting extends OpMode {
     // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
+    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1430; // PREV. 1530
+    final double LAUNCHER_TARGET_VELOCITY = 1500; // PREV. 1530
     final double LAUNCHER_VELOCITY_MARGIN = 50;
     final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
     final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
@@ -67,6 +68,8 @@ public class GoalAutoRedShooting extends OpMode {
     private final Pose startPose = new Pose(121.04347826086956, 127.09565217391304, Math.toRadians(37 + 180));
     private final Pose shootPose = new Pose(85.35652173913043, 94.53913043478263, Math.toRadians(40 + 180)); // TODO FIX PLEASE IT'S WRONG
     private final Pose endPose = new Pose(97.0434782609, 136.0695652173913, Math.toRadians(90 + 180));
+
+
 
     private PathChain driveStartPosShootPos, driveShootPosEndPos;
 
@@ -135,7 +138,9 @@ public class GoalAutoRedShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) {
+                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if ((launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) &&
+                        (launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() < LAUNCHER_MAX_VELOCITY)){
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -170,6 +175,7 @@ public class GoalAutoRedShooting extends OpMode {
     public void init() {
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
@@ -182,7 +188,7 @@ public class GoalAutoRedShooting extends OpMode {
         opModeTimer = new Timer();
         follower = Constants.createFollower(hardwareMap);
         // TODO add in any other init mechanicms
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+
 
         buildPaths();
         follower.setPose(startPose);
@@ -194,6 +200,7 @@ public class GoalAutoRedShooting extends OpMode {
         opModeTimer.resetTimer();
         setPathState(pathState);
         launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override
