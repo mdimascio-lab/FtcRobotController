@@ -83,6 +83,7 @@ public class FinalTeleopRobotOriented extends OpMode {
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
+    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private DcMotorEx intake = null;
@@ -133,6 +134,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          */
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
@@ -165,6 +167,12 @@ public class FinalTeleopRobotOriented extends OpMode {
         rightFeeder.setPower(STOP_SPEED);
 
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
+
+
+// Same settings as the first launcher
+        launcher2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launcher2.setZeroPowerBehavior(BRAKE);
+        launcher2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
 
         /*
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
@@ -201,8 +209,10 @@ public class FinalTeleopRobotOriented extends OpMode {
 
         if (gamepad1.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        } else if (gamepad1.b) { // stop flywheel
+            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+        } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
+            launcher2.setVelocity(STOP_SPEED);
         }
 
         if (gamepad1.left_bumper) {
@@ -245,7 +255,8 @@ public class FinalTeleopRobotOriented extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
+                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
