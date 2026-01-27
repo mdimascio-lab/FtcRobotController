@@ -31,7 +31,6 @@ public class GoalAutoBlueShooting extends OpMode {
     final double LAUNCHER_VELOCITY_MARGIN = 50;
     final double LAUNCHER_MIN_VELOCITY = LAUNCHER_TARGET_VELOCITY-LAUNCHER_VELOCITY_MARGIN; // prev.1170
     final double LAUNCHER_MAX_VELOCITY = LAUNCHER_TARGET_VELOCITY+LAUNCHER_VELOCITY_MARGIN;
-
     private enum LaunchState {
         IDLE,
         SPIN_UP,
@@ -39,7 +38,6 @@ public class GoalAutoBlueShooting extends OpMode {
         LAUNCHING,
         WAIT_BETWEEN_SHOTS
     }
-
     private LaunchState launchState;
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
