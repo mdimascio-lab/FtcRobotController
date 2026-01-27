@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -24,6 +26,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
     private DcMotorEx launcher = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
+    private DcMotorEx intake = null;
 
     final double LAUNCHER_TARGET_VELOCITY = 1500;
     final double LAUNCHER_VELOCITY_MARGIN = 50;
@@ -43,6 +46,10 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
     final double STOP_SPEED = 0.0;
     final double FULL_SPEED = 1.0;
     final double BETWEEN_SHOTS_DELAY = 1.0;
+    private enum IntakeState {
+        IDLE,
+        SPIN
+}
     public enum PathState {         // idk what im doing here but i guess it will work
         DRIVE_STARTtoSHOOT1,
         DRIVE_SHOOT1toBALLPILE1beforeC,             // C just meaning collected
@@ -59,6 +66,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
     }
 
     PathState pathState;
+    private IntakeState intakeState;
 
     private final Pose startPose = new Pose(59.40720961281709,11.150867823765026, Math.toRadians(90));
     private final Pose shoot1 = new Pose(71.90387182910547, 71.71161548731642, Math.toRadians(132));
@@ -237,6 +245,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 break;
         }
     }
+    void intakeSpin(boolean )
 
     @Override
     public void init() {
@@ -256,6 +265,10 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
         follower.setPose(startPose);
 
         launchState = LaunchState.IDLE;
+
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setZeroPowerBehavior(BRAKE);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void start() {
