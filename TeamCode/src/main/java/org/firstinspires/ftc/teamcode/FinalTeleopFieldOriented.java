@@ -65,7 +65,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @TeleOp
 public class FinalTeleopFieldOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
-    AprilTagWebcam aprilTag = new AprilTagWebcam();
+   // AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -124,7 +124,7 @@ public class FinalTeleopFieldOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
-        aprilTag.init(hardwareMap, telemetry);
+       // aprilTag.init(hardwareMap, telemetry);
 
         launchState = LaunchState.IDLE;
 
@@ -219,7 +219,7 @@ public class FinalTeleopFieldOriented extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-            intake.setPower(1.0);}
+            intake.setPower(-13.0);}
         else {
             intake.setPower(0);
         }

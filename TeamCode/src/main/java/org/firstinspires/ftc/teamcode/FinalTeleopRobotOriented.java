@@ -65,7 +65,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @TeleOp
 public class FinalTeleopRobotOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
-    AprilTagWebcam aprilTag = new AprilTagWebcam();
+   // AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -79,7 +79,7 @@ public class FinalTeleopRobotOriented extends OpMode {
 
 
     final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last, 1600 last
-    final double LAUNCHER_MIN_VELOCITY = 1170; // 1075 previous, 1200 last
+    final double LAUNCHER_MIN_VELOCITY = 700; // 1170 previous, 1200 last
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
@@ -123,7 +123,7 @@ public class FinalTeleopRobotOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
-        aprilTag.init(hardwareMap, telemetry);
+        // aprilTag.init(hardwareMap, telemetry);
 
         launchState = LaunchState.IDLE;
 
@@ -178,7 +178,8 @@ public class FinalTeleopRobotOriented extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
         /*
          * Tell the driver that initialization is complete.
@@ -225,15 +226,19 @@ public class FinalTeleopRobotOriented extends OpMode {
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        launch(gamepad1.x);
+        stopLaunch(gamepad1.a);
 
-        drive.drive(gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
+        drive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
 
         /*
          * Show the state and motor powers§
          */
         telemetry.addData("State", launchState);
+        telemetry.addData("bumper", gamepad1.x);
         telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("motorSpeed2", launcher2.getVelocity());
+        telemetry.addData("target", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Heading", drive.getHeading());
 
     }
@@ -247,7 +252,16 @@ public class FinalTeleopRobotOriented extends OpMode {
 
 
     void launch(boolean shotRequested) {
-        switch (launchState) {
+        if (shotRequested) {
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            if (launcher.getVelocity() > LAUNCHER_TARGET_VELOCITY-150 && launcher2.getVelocity() > LAUNCHER_TARGET_VELOCITY-150) {
+                leftFeeder.setPower(FULL_SPEED);
+                rightFeeder.setPower(FULL_SPEED);
+            }
+        }
+
+        /*switch (launchState) {
             case IDLE:
                 if (shotRequested) {
                     launchState = LaunchState.SPIN_UP;
@@ -256,9 +270,7 @@ public class FinalTeleopRobotOriented extends OpMode {
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
                 launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY) {
-                    launchState = LaunchState.LAUNCH;
-                }
+                launchState = LaunchState.LAUNCH;
                 break;
             case LAUNCH:
                 leftFeeder.setPower(FULL_SPEED);
@@ -272,7 +284,13 @@ public class FinalTeleopRobotOriented extends OpMode {
                     leftFeeder.setPower(STOP_SPEED);
                     rightFeeder.setPower(STOP_SPEED);
                 }
-                break;
-        }
+                break;*/
+
+    }
+    void stopLaunch(boolean stop){
+        leftFeeder.setPower(STOP_SPEED);
+        rightFeeder.setPower(STOP_SPEED);
+        launcher.setVelocity(0);
+        launcher2.setVelocity(0);
     }
 }

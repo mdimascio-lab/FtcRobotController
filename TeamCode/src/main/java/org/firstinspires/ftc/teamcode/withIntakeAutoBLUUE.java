@@ -245,7 +245,7 @@ public class    withIntakeAutoBLUUE extends OpMode{ // BRO THIS LOOKS SO GOOD OM
                 break;
         }
     }
-    void intakeSpin(boolean )
+
 
     @Override
     public void init() {
