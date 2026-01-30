@@ -179,7 +179,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          * both work to feed the ball into the robot.
          */
         leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        rightFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
 
         /*
          * Tell the driver that initialization is complete.
