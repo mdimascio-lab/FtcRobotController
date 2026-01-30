@@ -177,7 +177,8 @@ public class FinalTeleopFieldOriented extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        leftFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFeeder.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Tell the driver that initialization is complete.
@@ -219,7 +220,7 @@ public class FinalTeleopFieldOriented extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-            intake.setPower(-13.0);}
+            intake.setPower(1.0);}
         else {
             intake.setPower(0);
         }
@@ -227,6 +228,9 @@ public class FinalTeleopFieldOriented extends OpMode {
          * Now we call our "Launch" function.
          */
         launch(gamepad1.rightBumperWasPressed());
+
+        launcher.setDirection(DcMotorSimple.Direction.REVERSE);
+        launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
