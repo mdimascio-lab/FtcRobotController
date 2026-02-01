@@ -234,7 +234,13 @@ public class FinalTeleopFieldOriented extends OpMode {
         if (gamepad1.left_bumper) {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             intake.setPower(1.0);}
+=======
+            intake.setVelocity(600);}
+        else if (gamepad1.dpad_down) {
+            intake.setVelocity(-300);}
+>>>>>>> Stashed changes
 =======
             intake.setVelocity(600);}
         else if (gamepad1.dpad_down) {
@@ -254,9 +260,12 @@ public class FinalTeleopFieldOriented extends OpMode {
          */
         //launch(gamepad1.rightBumperWasPressed());
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         launcher.setDirection(DcMotorSimple.Direction.REVERSE);
         launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
