@@ -29,7 +29,6 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
@@ -61,14 +60,15 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
  * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
  */
 
+//TODO make robotOriented/fieldOriented toggle during init
 
 @TeleOp
 public class FinalTeleopFieldOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
    // AprilTagWebcam aprilTag = new AprilTagWebcam();
-    final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
+    final double FEED_TIME_SECONDS = 1.0; //The feeder servos run this long when a shot is requested. previous 0.2
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
-    final double FULL_SPEED = 1.0;
+    final double FULL_SPEED = 2.0; //previous 1.0
 
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
@@ -78,8 +78,8 @@ public class FinalTeleopFieldOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last, 1600 last, 1570 last
-    final double LAUNCHER_MIN_VELOCITY = 1170; // 1075 previous, 1200 last, 1230 last
+    final double LAUNCHER_TARGET_VELOCITY = 4000; //1125 too fast, 1200 last, 1600 last, 1570 last, 1600 last. 2900 suggested by Abishek
+    final double LAUNCHER_MIN_VELOCITY = 2000; // 1075 previous, 1200 last, 1230 last
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
@@ -138,6 +138,7 @@ public class FinalTeleopFieldOriented extends OpMode {
         launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+        launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setZeroPowerBehavior(BRAKE);
@@ -204,7 +205,7 @@ public class FinalTeleopFieldOriented extends OpMode {
      * Code to run REPEATEDLY after the driver hits START but before they hit STOP
      */
     // public void faceAprilTag(){
-// TODO create method for april tag alignme
+// TODO create method for april tag alignment
 
 
     @Override
@@ -219,15 +220,33 @@ public class FinalTeleopFieldOriented extends OpMode {
             launcher2.setVelocity(STOP_SPEED);
         }
 
+        if (gamepad1.right_bumper) {
+            leftFeeder.setPower(-FULL_SPEED);
+            rightFeeder.setPower(-FULL_SPEED);}
+        else if(gamepad1.dpad_up) {
+            leftFeeder.setPower(FULL_SPEED);
+            rightFeeder.setPower(FULL_SPEED);}
+        else {
+            rightFeeder.setPower(STOP_SPEED);
+            leftFeeder.setPower(STOP_SPEED);
+        }
+
         if (gamepad1.left_bumper) {
+<<<<<<< Updated upstream
             intake.setPower(1.0);}
+=======
+            intake.setVelocity(600);}
+        else if (gamepad1.dpad_down) {
+            intake.setVelocity(-300);}
+>>>>>>> Stashed changes
         else {
             intake.setPower(0);
+
         }
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.rightBumperWasPressed());
+        //launch(gamepad1.rightBumperWasPressed());
 
         launcher.setDirection(DcMotorSimple.Direction.REVERSE);
         launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -252,33 +271,33 @@ public class FinalTeleopFieldOriented extends OpMode {
     }
 
 
-    void launch(boolean shotRequested) {
-        switch (launchState) {
-            case IDLE:
-                if (shotRequested) {
-                    launchState = LaunchState.SPIN_UP;
-                }
-                break;
-            case SPIN_UP:
-                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY ) {
-                    launchState = LaunchState.LAUNCH;
-                }
-                break;
-            case LAUNCH:
-                leftFeeder.setPower(FULL_SPEED);
-                rightFeeder.setPower(FULL_SPEED);
-                feederTimer.reset();
-                launchState = LaunchState.LAUNCHING;
-                break;
-            case LAUNCHING:
-                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    launchState = LaunchState.IDLE;
-                    leftFeeder.setPower(STOP_SPEED);
-                    rightFeeder.setPower(STOP_SPEED);
-                }
-                break;
-        }
-    }
+//    void launch(boolean shotRequested) {
+//        switch (launchState) {
+//            case IDLE:
+//                if (shotRequested) {
+//                    launchState = LaunchState.SPIN_UP;
+//                }
+//                break;
+//            case SPIN_UP:
+//                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY ) {
+//                    launchState = LaunchState.LAUNCH;
+//                }
+//                break;
+//            case LAUNCH:
+//                leftFeeder.setPower(-FULL_SPEED);
+//                rightFeeder.setPower(-FULL_SPEED);
+//                feederTimer.reset();
+//                launchState = LaunchState.LAUNCHING;
+//                break;
+//            case LAUNCHING:
+//                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+//                    launchState = LaunchState.IDLE;
+//                    leftFeeder.setPower(STOP_SPEED);
+//                    rightFeeder.setPower(STOP_SPEED);
+//                }
+//                break;
+//        }
+//    }
 }

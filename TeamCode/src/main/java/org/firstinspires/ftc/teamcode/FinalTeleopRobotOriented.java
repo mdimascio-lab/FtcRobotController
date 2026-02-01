@@ -44,6 +44,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.mechanisms.AprilTagWebcam;
+import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 /*
@@ -64,8 +65,10 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 @TeleOp
 public class FinalTeleopRobotOriented extends OpMode {
+
+    //private DcMotorEx intake;
     MecanumDrive drive = new MecanumDrive();
-   // AprilTagWebcam aprilTag = new AprilTagWebcam();
+    // AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
@@ -78,7 +81,7 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 1530; //1125 too fast, 1200 last, 1600 last
+    final double LAUNCHER_TARGET_VELOCITY = 3000; //1125 too fast, 1200 last, 1600 last
     final double LAUNCHER_MIN_VELOCITY = 700; // 1170 previous, 1200 last
 
     // Declare OpMode members.
@@ -86,7 +89,7 @@ public class FinalTeleopRobotOriented extends OpMode {
     private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
-    private DcMotorEx intake = null;
+    private DcMotorEx intake;
 
     ElapsedTime feederTimer = new ElapsedTime();
 
@@ -123,7 +126,12 @@ public class FinalTeleopRobotOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
+        //intake.init(hardwareMap);
         // aprilTag.init(hardwareMap, telemetry);
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setZeroPowerBehavior(BRAKE);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         launchState = LaunchState.IDLE;
 
@@ -138,9 +146,9 @@ public class FinalTeleopRobotOriented extends OpMode {
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
-        intake.setZeroPowerBehavior(BRAKE);
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        intake = hardwareMap.get(DcMotorEx.class, "intake");
+//        intake.setZeroPowerBehavior(BRAKE);
+//        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         /*
@@ -206,28 +214,37 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
     @Override
     public void loop() {
-
-
         if (gamepad1.y) {
             launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher2.setVelocity(-LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
             launcher2.setVelocity(STOP_SPEED);
         }
 
-        if (gamepad1.left_bumper) {
-            intake.setPower(1.0);}
-        else {
-            intake.setPower(0);
+        if (gamepad1.right_bumper) {
+            leftFeeder.setPower(FULL_SPEED);
+            rightFeeder.setPower(-FULL_SPEED);
+        } else if (gamepad1.dpad_up) {
+            leftFeeder.setPower(-FULL_SPEED);
+            rightFeeder.setPower(FULL_SPEED);
+        } else {
+            rightFeeder.setPower(STOP_SPEED);
+            leftFeeder.setPower(STOP_SPEED);
         }
-        /*
+
+        if (gamepad1.left_bumper) {
+            intake.setVelocity(600);}
+        else if (gamepad1.dpad_down) {
+            intake.setVelocity(-300);}
+        else {
+            intake.setPower(0);}
+
+
 
         /*
          * Now we call our "Launch" function.
          */
-        launch(gamepad1.x);
-        stopLaunch(gamepad1.a);
 
         drive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
 
@@ -241,56 +258,53 @@ public class FinalTeleopRobotOriented extends OpMode {
         telemetry.addData("target", LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Heading", drive.getHeading());
 
-    }
+    }}
 
     /*
      * Code to run ONCE after the driver hits STOP
      */
-    @Override
-    public void stop() {
-    }
 
-
-    void launch(boolean shotRequested) {
-        if (shotRequested) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
-            if (launcher.getVelocity() > LAUNCHER_TARGET_VELOCITY-150 && launcher2.getVelocity() > LAUNCHER_TARGET_VELOCITY-150) {
-                leftFeeder.setPower(FULL_SPEED);
-                rightFeeder.setPower(FULL_SPEED);
-            }
-        }
-
-        /*switch (launchState) {
-            case IDLE:
-                if (shotRequested) {
-                    launchState = LaunchState.SPIN_UP;
-                }
-                break;
-            case SPIN_UP:
-                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                launchState = LaunchState.LAUNCH;
-                break;
-            case LAUNCH:
-                leftFeeder.setPower(FULL_SPEED);
-                rightFeeder.setPower(FULL_SPEED);
-                feederTimer.reset();
-                launchState = LaunchState.LAUNCHING;
-                break;
-            case LAUNCHING:
-                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
-                    launchState = LaunchState.IDLE;
-                    leftFeeder.setPower(STOP_SPEED);
-                    rightFeeder.setPower(STOP_SPEED);
-                }
-                break;*/
-
-    }
-    void stopLaunch(boolean stop){
-        leftFeeder.setPower(STOP_SPEED);
-        rightFeeder.setPower(STOP_SPEED);
-        launcher.setVelocity(0);
-        launcher2.setVelocity(0);
-    }
-}
+//
+//    void launch(boolean shotRequested) {
+//        if (shotRequested) {
+//            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//            if (launcher.getVelocity() > LAUNCHER_TARGET_VELOCITY - 150 && launcher2.getVelocity() > LAUNCHER_TARGET_VELOCITY - 150) {
+//                leftFeeder.setPower(FULL_SPEED);
+//                rightFeeder.setPower(FULL_SPEED);
+//            }
+//        }
+//
+//        switch (launchState) {
+//            case IDLE:
+//                if (shotRequested) {
+//                    launchState = LaunchState.SPIN_UP;
+//                }
+//                break;
+//            case SPIN_UP:
+//                launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+//                launchState = LaunchState.LAUNCH;
+//                break;
+//            case LAUNCH:
+//                leftFeeder.setPower(FULL_SPEED);
+//                rightFeeder.setPower(FULL_SPEED);
+//                feederTimer.reset();
+//                launchState = LaunchState.LAUNCHING;
+//                break;
+//            case LAUNCHING:
+//                if (feederTimer.seconds() > FEED_TIME_SECONDS) {
+//                    launchState = LaunchState.IDLE;
+//                    leftFeeder.setPower(STOP_SPEED);
+//                    rightFeeder.setPower(STOP_SPEED);
+//                }
+//                break;
+//
+////        }
+//        void stopLaunch (booleanstop) {
+//            leftFeeder.setPower(STOP_SPEED);
+//        rightFeeder.setPower(STOP_SPEED);
+//        launcher.setVelocity(0);
+//        launcher2.setVelocity(0);
+//
+//}
