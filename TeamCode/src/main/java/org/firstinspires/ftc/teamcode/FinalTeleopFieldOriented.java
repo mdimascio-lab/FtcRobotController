@@ -232,25 +232,13 @@ public class FinalTeleopFieldOriented extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
             intake.setPower(1.0);}
-=======
             intake.setVelocity(600);}
         else if (gamepad1.dpad_down) {
             intake.setVelocity(-300);}
->>>>>>> Stashed changes
-=======
-            intake.setVelocity(600);}
         else if (gamepad1.dpad_down) {
             intake.setVelocity(-300);}
->>>>>>> Stashed changes
-=======
-            intake.setVelocity(600);}
-        else if (gamepad1.dpad_down) {
-            intake.setVelocity(-300);}
->>>>>>> Stashed changes
         else {
             intake.setPower(0);
 
