@@ -56,10 +56,10 @@ public class MecanumDrive {
     public void drive(double forward, double right, double rotate) {
         // This calculates the power needed for each wheel based on the amount of forward,
         // strafe right, and rotate
-        double frontLeftPower = forward - right + rotate; // before + before +
-        double frontRightPower = forward + right + rotate;// before - right -
-        double backRightPower = forward - right + rotate;// before + right -
-        double backLeftPower = forward + right - rotate;// before - right +
+        double frontLeftPower = forward + right - rotate; // before forward - right +
+        double frontRightPower = forward - right + rotate;// before forward + right -
+        double backRightPower = forward + right + rotate;// before forward - right -
+        double backLeftPower = forward - right - rotate;// before forward + right +
 
         double maxPower = 1.0;
         double maxSpeed = 1.0;  // make this slower for outreaches
