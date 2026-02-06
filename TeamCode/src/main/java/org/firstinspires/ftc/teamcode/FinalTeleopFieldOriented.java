@@ -65,7 +65,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 @TeleOp
 public class FinalTeleopFieldOriented extends OpMode {
     MecanumDrive drive = new MecanumDrive();
-   // AprilTagWebcam aprilTag = new AprilTagWebcam();
+    // AprilTagWebcam aprilTag = new AprilTagWebcam();
     final double FEED_TIME_SECONDS = 1.0; //The feeder servos run this long when a shot is requested. previous 0.2
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 2.0; //previous 1.0
@@ -124,7 +124,7 @@ public class FinalTeleopFieldOriented extends OpMode {
     @Override
     public void init() {
         drive.init(hardwareMap);
-       // aprilTag.init(hardwareMap, telemetry);
+        // aprilTag.init(hardwareMap, telemetry);
 
         launchState = LaunchState.IDLE;
 
@@ -222,24 +222,21 @@ public class FinalTeleopFieldOriented extends OpMode {
 
         if (gamepad1.right_bumper) {
             leftFeeder.setPower(-FULL_SPEED);
-            rightFeeder.setPower(-FULL_SPEED);}
-        else if(gamepad1.dpad_up) {
+            rightFeeder.setPower(-FULL_SPEED);
+        } else if (gamepad1.dpad_up) {
             leftFeeder.setPower(FULL_SPEED);
-            rightFeeder.setPower(FULL_SPEED);}
-        else {
+            rightFeeder.setPower(FULL_SPEED);
+        } else {
             rightFeeder.setPower(STOP_SPEED);
             leftFeeder.setPower(STOP_SPEED);
         }
 
         if (gamepad1.left_bumper) {
-
-            intake.setPower(1.0);}
-            intake.setVelocity(600);}
-        else if (gamepad1.dpad_down) {
-            intake.setVelocity(-300);}
-        else if (gamepad1.dpad_down) {
-            intake.setVelocity(-300);}
-        else {
+            intake.setPower(1.0);
+            intake.setVelocity(600);
+        } else if (gamepad1.dpad_down) {
+            intake.setVelocity(-300);
+        } else {
             intake.setPower(0);
 
         }
@@ -247,16 +244,10 @@ public class FinalTeleopFieldOriented extends OpMode {
          * Now we call our "Launch" function.
          */
         //launch(gamepad1.rightBumperWasPressed());
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 
         launcher.setDirection(DcMotorSimple.Direction.REVERSE);
         launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 
 
         drive.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //THIS IS THE CORRECT FIELD ORIENTED LINE
