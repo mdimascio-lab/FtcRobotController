@@ -78,7 +78,7 @@ public class FinalTeleopFieldOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 4000; //1125 too fast, 1200 last, 1600 last, 1570 last, 1600 last. 2900 suggested by Abishek
+    final double LAUNCHER_TARGET_VELOCITY = 7000; //1125 too fast, 1200 last, 1600 last, 1570 last, 1600 last. 2900 suggested by Abishek
     final double LAUNCHER_MIN_VELOCITY = 2000; // 1075 previous, 1200 last, 1230 last
 
     // Declare OpMode members.
@@ -213,7 +213,7 @@ public class FinalTeleopFieldOriented extends OpMode {
 
 
         if (gamepad1.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher.setVelocity(-LAUNCHER_TARGET_VELOCITY);
             launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
