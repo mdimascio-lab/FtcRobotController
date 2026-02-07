@@ -81,7 +81,7 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_POWER = 7000; //1125 too fast, 1200 last, 1600 last
+    final double LAUNCHER_TARGET_POWER = 5500; //1125 too fast, 1200 last, 1600 last
     final double LAUNCHER_MIN_VELOCITY = 700; // 1170 previous, 1200 last
 
     // Declare OpMode members.
@@ -216,9 +216,13 @@ public class FinalTeleopRobotOriented extends OpMode {
     public void loop() {
         if (gamepad1.y) {
             launcher.setVelocity(-LAUNCHER_TARGET_POWER);
+
+        if (gamepad1.x) {
             launcher2.setVelocity(LAUNCHER_TARGET_POWER);
         } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
+        }
+        else if (gamepad1.a) { // stop flywheels
             launcher2.setVelocity(STOP_SPEED);
         }
 
@@ -258,7 +262,7 @@ public class FinalTeleopRobotOriented extends OpMode {
         telemetry.addData("target", LAUNCHER_TARGET_POWER);
         telemetry.addData("Heading", drive.getHeading());
 
-    }}
+    }}}
 
     /*
      * Code to run ONCE after the driver hits STOP
