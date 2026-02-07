@@ -246,7 +246,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          * Now we call our "Launch" function.
          */
 
-        drive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
+        drive.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x); // This should make it robot centric
 
         /*
          * Show the state and motor powers§
