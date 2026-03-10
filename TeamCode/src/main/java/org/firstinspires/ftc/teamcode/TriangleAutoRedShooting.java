@@ -22,7 +22,6 @@ public class TriangleAutoRedShooting extends OpMode {
     // -----------  shooter loigc ---------------
 
     private DcMotorEx launcher = null;
-    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
@@ -137,9 +136,7 @@ public class TriangleAutoRedShooting extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
-                if ((launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY) &&
-                        (launcher2.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher2.getVelocity() < LAUNCHER_MAX_VELOCITY)){
+                if ((launcher.getVelocity() > LAUNCHER_MIN_VELOCITY && launcher.getVelocity() < LAUNCHER_MAX_VELOCITY)){
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
@@ -174,7 +171,6 @@ public class TriangleAutoRedShooting extends OpMode {
     public void init() {
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo .class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(265, 0, 0, 12.5));
@@ -199,7 +195,6 @@ public class TriangleAutoRedShooting extends OpMode {
         opModeTimer.resetTimer();
         setPathState(pathState);
         launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
-        launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
     }
 
     @Override

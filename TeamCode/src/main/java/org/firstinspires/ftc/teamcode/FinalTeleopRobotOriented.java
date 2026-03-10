@@ -81,12 +81,11 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_POWER = 7000; //1125 too fast, 1200 last, 1600 last
-    final double LAUNCHER_MIN_VELOCITY = 700; // 1170 previous, 1200 last
+    final double LAUNCHER_TARGET_POWER = 70; //1125 too fast, 1200 last, 1600 last
+    final double LAUNCHER_MIN_VELOCITY = 60; // 1170 previous, 1200 last
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
-    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
     private DcMotorEx intake;
@@ -141,8 +140,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          * step.
          */
 
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
@@ -178,9 +176,7 @@ public class FinalTeleopRobotOriented extends OpMode {
 
 
 // Same settings as the first launcher
-        launcher2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launcher2.setZeroPowerBehavior(BRAKE);
-        launcher2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
+
 
         /*
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
@@ -215,11 +211,9 @@ public class FinalTeleopRobotOriented extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.y) {
-            launcher.setVelocity(-LAUNCHER_TARGET_POWER);
-            launcher2.setVelocity(LAUNCHER_TARGET_POWER);
+            launcher.setVelocity(LAUNCHER_TARGET_POWER);
         } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
-            launcher2.setVelocity(STOP_SPEED);
         }
 
         if (gamepad1.right_bumper) {
@@ -254,7 +248,6 @@ public class FinalTeleopRobotOriented extends OpMode {
         telemetry.addData("State", launchState);
         telemetry.addData("bumper", gamepad1.x);
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("motorSpeed2", launcher2.getVelocity());
         telemetry.addData("target", LAUNCHER_TARGET_POWER);
         telemetry.addData("Heading", drive.getHeading());
 

@@ -78,12 +78,12 @@ public class FinalTeleopFieldOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_VELOCITY = 7000; //1125 too fast, 1200 last, 1600 last, 1570 last, 1600 last. 2900 suggested by Abishek
-    final double LAUNCHER_MIN_VELOCITY = 2000; // 1075 previous, 1200 last, 1230 last
+    final double LAUNCHER_TARGET_VELOCITY = 70; //1125 too fast, 1200 last, 1600 last, 1570 last, 1600 last. 2900 suggested by Abishek
+    final double LAUNCHER_MIN_VELOCITY = 60; // 1075 previous, 1200 last, 1230 last
 
     // Declare OpMode members.
+
     private DcMotorEx launcher = null;
-    private DcMotorEx launcher2 = null;
     private CRServo leftFeeder = null;
     private CRServo rightFeeder = null;
 
@@ -133,12 +133,10 @@ public class FinalTeleopFieldOriented extends OpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step.
          */
-
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        launcher2 = hardwareMap.get(DcMotorEx.class, "launcher2");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher2");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
-        launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
+        launcher.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setZeroPowerBehavior(BRAKE);
@@ -170,10 +168,6 @@ public class FinalTeleopFieldOriented extends OpMode {
 
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
 
-
-        launcher2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launcher2.setZeroPowerBehavior(BRAKE);
-        launcher2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
         /*
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
@@ -213,11 +207,9 @@ public class FinalTeleopFieldOriented extends OpMode {
 
 
         if (gamepad1.y) {
-            launcher.setVelocity(-LAUNCHER_TARGET_VELOCITY);
-            launcher2.setVelocity(LAUNCHER_TARGET_VELOCITY);
+            launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
         } else if (gamepad1.b) { // stop flywheels
             launcher.setVelocity(STOP_SPEED);
-            launcher2.setVelocity(STOP_SPEED);
         }
 
         if (gamepad1.right_bumper) {
@@ -247,7 +239,6 @@ public class FinalTeleopFieldOriented extends OpMode {
 
 
         launcher.setDirection(DcMotorSimple.Direction.REVERSE);
-        launcher2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         drive.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //THIS IS THE CORRECT FIELD ORIENTED LINE
