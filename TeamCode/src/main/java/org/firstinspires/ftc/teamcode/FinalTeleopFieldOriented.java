@@ -133,7 +133,7 @@ public class FinalTeleopFieldOriented extends OpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step.
          */
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher2");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
         launcher.setDirection(DcMotorSimple.Direction.REVERSE);

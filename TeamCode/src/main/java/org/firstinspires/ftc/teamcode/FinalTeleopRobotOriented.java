@@ -140,7 +140,7 @@ public class FinalTeleopRobotOriented extends OpMode {
          * step.
          */
 
-        launcher = hardwareMap.get(DcMotorEx.class, "launcher2");
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
         leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
         rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
