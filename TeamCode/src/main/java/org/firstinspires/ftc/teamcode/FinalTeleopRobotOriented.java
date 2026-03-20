@@ -86,8 +86,8 @@ public class FinalTeleopRobotOriented extends OpMode {
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
-    private CRServo leftFeeder = null;
-    private CRServo rightFeeder = null;
+    //private CRServo leftFeeder = null;
+    //private CRServo rightFeeder = null;
     private DcMotorEx intake;
 
     ElapsedTime feederTimer = new ElapsedTime();
@@ -141,8 +141,8 @@ public class FinalTeleopRobotOriented extends OpMode {
          */
 
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
-        rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
+        //leftFeeder = hardwareMap.get(CRServo.class, "left_feeder");
+        //rightFeeder = hardwareMap.get(CRServo.class, "right_feeder");
 
 //        intake = hardwareMap.get(DcMotorEx.class, "intake");
 //        intake.setZeroPowerBehavior(BRAKE);
@@ -169,8 +169,8 @@ public class FinalTeleopRobotOriented extends OpMode {
         /*
          * set Feeders to an initial value to initialize the servo controller
          */
-        leftFeeder.setPower(STOP_SPEED);
-        rightFeeder.setPower(STOP_SPEED);
+        //leftFeeder.setPower(STOP_SPEED);
+        //rightFeeder.setPower(STOP_SPEED);
 
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
 
@@ -182,8 +182,8 @@ public class FinalTeleopRobotOriented extends OpMode {
          * Much like our drivetrain motors, we set the left feeder servo to reverse so that they
          * both work to feed the ball into the robot.
          */
-        leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+        //leftFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
+        //rightFeeder.setDirection(DcMotorSimple.Direction.FORWARD);
 
         /*
          * Tell the driver that initialization is complete.
@@ -216,16 +216,16 @@ public class FinalTeleopRobotOriented extends OpMode {
             launcher.setVelocity(STOP_SPEED);
         }
 
-        if (gamepad1.right_bumper) {
-            leftFeeder.setPower(FULL_SPEED);
-            rightFeeder.setPower(-FULL_SPEED);
-        } else if (gamepad1.dpad_up) {
-            leftFeeder.setPower(-FULL_SPEED);
-            rightFeeder.setPower(FULL_SPEED);
-        } else {
-            rightFeeder.setPower(STOP_SPEED);
-            leftFeeder.setPower(STOP_SPEED);
-        }
+//        if (gamepad1.right_bumper) {
+//            leftFeeder.setPower(FULL_SPEED);
+//            rightFeeder.setPower(-FULL_SPEED);
+//        } else if (gamepad1.dpad_up) {
+//            leftFeeder.setPower(-FULL_SPEED);
+//            rightFeeder.setPower(FULL_SPEED);
+//        } else {
+//            rightFeeder.setPower(STOP_SPEED);
+//            leftFeeder.setPower(STOP_SPEED);
+//        }
 
         if (gamepad1.left_bumper) {
             intake.setVelocity(600);}

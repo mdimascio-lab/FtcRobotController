@@ -10,11 +10,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.mechanisms.BlockerServo;
 
 @TeleOp
 public class LauncherTest extends OpMode {
     private DcMotorEx launcher;
     private DcMotorEx intake;
+    BlockerServo blocker = new BlockerServo();
 
     final double LAUNCHER_TARGET_POWER = 70;
     final double LAUNCHER_MIN_VELOCITY = 60;
@@ -29,6 +31,7 @@ public class LauncherTest extends OpMode {
         launcher.setZeroPowerBehavior(BRAKE);
         launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
+        blocker.init(hardwareMap);
 
     }
 
@@ -45,6 +48,14 @@ public class LauncherTest extends OpMode {
             intake.setPower(0.0);
         }
 
+        if (gamepad1.a) {
+            blocker.setServoPos(0.5);
+        } else {
+            blocker.setServoPos(1.0);
+        }
+
         telemetry.addData("motorSpeed", launcher.getVelocity());
-        telemetry.addData("target", LAUNCHER_TARGET_POWER);}
+        telemetry.addData("target", LAUNCHER_TARGET_POWER);
+        //telemetry.addData("blocker Position", .)
+    }
 }
