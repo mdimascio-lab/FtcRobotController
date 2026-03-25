@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -12,8 +11,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
+import org.firstinspires.ftc.teamcode.mechanisms.BlockerServo;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.Shooter;
 import org.firstinspires.ftc.teamcode.mechanisms.Transfer;
@@ -26,8 +25,9 @@ public class NEWLATESTTELEOP extends OpMode {
     final double LAUNCHER_TARGET_POWER = 70;
     final double LAUNCHER_MIN_VELOCITY = 60;
 
-    private DcMotorEx launcher = null;
+    private DcMotorEx launcher; // adding = null at the end is just the same. it just tells the reader that it is empty and it wil be changed later.
     private  DcMotorEx intake;
+    BlockerServo blocker = new BlockerServo();
 
     private enum LaunchState {
         IDLE,
@@ -50,6 +50,8 @@ public class NEWLATESTTELEOP extends OpMode {
         launcher.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         launcher.setZeroPowerBehavior(BRAKE);
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10)); //these are old values, we need new ones
+
+        blocker.init(hardwareMap);
 
         launchState = launchState.IDLE;
 
@@ -80,6 +82,12 @@ public class NEWLATESTTELEOP extends OpMode {
             intake.setPower(0.0);
         }
 
+        if (gamepad1.a) { // TODO make it so that it will automatically lock the balls and with only clicking the fire button, it will open letting the balls out.
+            blocker.setServoPos(0.5);
+        } else {
+            blocker.setServoPos(1.0);
+        }
+
         drive.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x); // robot oriented
 
         telemetry.addData("State", launchState);
@@ -99,7 +107,7 @@ public class NEWLATESTTELEOP extends OpMode {
                 break;
             case SPIN_UP:
                 launcher.setVelocity(LAUNCHER_TARGET_POWER);
-                if (launcher.getVelocity() > LAUNCHER_TARGET_POWER - 10) {
+                if (launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
                     launchState = LaunchState.LAUNCH;
                 }
                 break;
