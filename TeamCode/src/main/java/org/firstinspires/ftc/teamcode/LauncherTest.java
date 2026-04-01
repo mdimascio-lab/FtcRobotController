@@ -38,7 +38,7 @@ public class LauncherTest extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.y) {
-            launcher.setVelocity(LAUNCHER_TARGET_POWER);
+            launcher.setVelocity((LAUNCHER_TARGET_POWER*68)/32);
         } else if (gamepad1.b) {
             launcher.setVelocity(STOP_SPEED);
         }

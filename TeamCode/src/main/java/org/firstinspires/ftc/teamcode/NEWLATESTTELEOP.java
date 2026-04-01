@@ -92,10 +92,14 @@ public class NEWLATESTTELEOP extends OpMode {
 
         telemetry.addData("State", launchState);
         telemetry.addData("bumper", gamepad1.x);
-        telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("motorSpeed", getRPM(launcher.getVelocity()));
         telemetry.addData("target", LAUNCHER_TARGET_POWER);
         telemetry.addData("Heading", drive.getHeading());
 
+    }
+
+    public double getRPM(double ticks){
+        return (ticks/28) * 60;
     }
 
     void launch(boolean shotRequested) {

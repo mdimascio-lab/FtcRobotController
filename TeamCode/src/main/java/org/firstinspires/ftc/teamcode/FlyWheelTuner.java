@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 public class FlyWheelTuner extends OpMode {
     public DcMotorEx flywheelMotor;
 
+    private double GEAR_RATIO = 52/68;
     public double highVelocity = 1500;
     public double lowVelocity = 900;
 
@@ -77,12 +78,15 @@ public class FlyWheelTuner extends OpMode {
         double error = curTargetVelocity - curVelocity;
 
         telemetry.addData("target Velocity", curTargetVelocity);
-        telemetry.addData("Current Velocity", "%.2f", curVelocity);
+        telemetry.addData("Current RPM", "%.2f", ((flywheelMotor.getVelocity()/28.0*60)*(52.0/68.0)));
         telemetry.addData("Error", "%.2f", error);
         telemetry.addLine("--------------------------------");
         telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
         telemetry.addData("Tuning F", "%.4f (D-Pad L/R", F);
         telemetry.addData("Step Size", "%.4f (B Button)", stepSizes[stepIndex]);
 
+    }
+    public double getRPM(double ticks){
+        return (((ticks/28.0) * 60)*(52.0/68.0));
     }
 }
