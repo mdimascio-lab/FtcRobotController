@@ -12,8 +12,8 @@ public class FlyWheelTuner extends OpMode {
     public DcMotorEx flywheelMotor;
 
     private double GEAR_RATIO = 52/68;
-    public double highVelocity =4000;
-    public double lowVelocity = 900;
+    public double highVelocity = 2250;
+    public double lowVelocity = 1900;
 
     double curTargetVelocity = highVelocity;
 

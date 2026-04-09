@@ -81,7 +81,7 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_POWER = 70; //1125 too fast, 1200 last, 1600 last
+    final double LAUNCHER_TARGET_POWER = 2000; //1125 too fast, 1200 last, 1600 last
     final double LAUNCHER_MIN_VELOCITY = 60; // 1170 previous, 1200 last
 
     // Declare OpMode members.
