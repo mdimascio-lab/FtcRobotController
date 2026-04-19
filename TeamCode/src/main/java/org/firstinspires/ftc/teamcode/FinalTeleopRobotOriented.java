@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.mechanisms.BlockerServo;
 
 import org.firstinspires.ftc.teamcode.mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
@@ -72,6 +73,8 @@ public class FinalTeleopRobotOriented extends OpMode {
     final double FEED_TIME_SECONDS = 0.20; //The feeder servos run this long when a shot is requested.
     final double STOP_SPEED = 0.0; //We send this power to the servos when we want them to stop.
     final double FULL_SPEED = 1.0;
+    private float GEAR_RATIO = 52/68;
+    BlockerServo blocker = new BlockerServo();
 
     /*
      * When we control our launcher motor, we are using encoders. These allow the control system
@@ -81,8 +84,8 @@ public class FinalTeleopRobotOriented extends OpMode {
      */
 
 
-    final double LAUNCHER_TARGET_POWER = 2000; //1125 too fast, 1200 last, 1600 last
-    final double LAUNCHER_MIN_VELOCITY = 60; // 1170 previous, 1200 last
+    final double LAUNCHER_TARGET_POWER = 2500; //1125 too fast, 1200 last, 1600 last
+    final double LAUNCHER_MIN_VELOCITY = 1900; // 1170 previous, 1200 last
 
     // Declare OpMode members.
     private DcMotorEx launcher = null;
@@ -130,6 +133,7 @@ public class FinalTeleopRobotOriented extends OpMode {
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setZeroPowerBehavior(BRAKE);
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        blocker.init(hardwareMap);
 
 
         launchState = LaunchState.IDLE;
@@ -172,7 +176,7 @@ public class FinalTeleopRobotOriented extends OpMode {
         //leftFeeder.setPower(STOP_SPEED);
         //rightFeeder.setPower(STOP_SPEED);
 
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(300, 0, 0, 10));
+        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(15.1, 0, 0, 13.115));
 
 
 // Same settings as the first launcher
@@ -234,6 +238,12 @@ public class FinalTeleopRobotOriented extends OpMode {
         else {
             intake.setPower(0);}
 
+        if (gamepad1.a) {
+            blocker.setServoPos(0.5);
+        } else {
+            blocker.setServoPos(1.0);
+        }
+
 
 
         /*
@@ -247,11 +257,16 @@ public class FinalTeleopRobotOriented extends OpMode {
          */
         telemetry.addData("State", launchState);
         telemetry.addData("bumper", gamepad1.x);
-        telemetry.addData("motorSpeed", launcher.getVelocity());
+        telemetry.addData("Current RPM", "%.2f", getRPM(launcher.getVelocity()));
+        telemetry.addData("Current RPM", "%.2f", ((launcher.getVelocity()/28.0*60)*(52.0/68.0)));
         telemetry.addData("target", LAUNCHER_TARGET_POWER);
         telemetry.addData("Heading", drive.getHeading());
 
-    }}
+    }
+    public double getRPM(double ticks){
+        return (((ticks/28.0) * 60)*(52.0/68.0));
+    }
+}
 
     /*
      * Code to run ONCE after the driver hits STOP
