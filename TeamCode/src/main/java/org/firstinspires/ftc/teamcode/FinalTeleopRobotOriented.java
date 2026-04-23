@@ -47,6 +47,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.BlockerServo;
 import org.firstinspires.ftc.teamcode.mechanisms.AprilTagWebcam;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanisms.getRPMclass;
 
 /*
  * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot for the
@@ -263,9 +264,9 @@ public class FinalTeleopRobotOriented extends OpMode {
         telemetry.addData("Heading", drive.getHeading());
 
     }
-    public double getRPM(double ticks){
-        return (((ticks/28.0) * 60)*(52.0/68.0));
-    }
+    //public double getRPM(double ticks){
+    //    return (((ticks/28.0) * 60)*(52.0/68.0)); // on new gears 40 to 46
+    //}
 }
 
     /*
